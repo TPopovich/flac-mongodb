@@ -140,7 +140,7 @@ public class RedactedDBCollection {
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
         appendQueryToSecureAggregationPipeline(pipelineSecure, query);
-        appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
+        appendProjectToSecureAggregationPipeline(pipelineSecure, fields);
         appendSkipToSecureAggregationPipeline(pipelineSecure, numToSkip);
         appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
 
@@ -163,7 +163,7 @@ public class RedactedDBCollection {
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
         appendQueryToSecureAggregationPipeline(pipelineSecure, query);
-        appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
+        appendProjectToSecureAggregationPipeline(pipelineSecure, fields);
         appendSkipToSecureAggregationPipeline(pipelineSecure, numToSkip);
         appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
 
@@ -183,7 +183,7 @@ public class RedactedDBCollection {
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
         appendQueryToSecureAggregationPipeline(pipelineSecure, query);
-        appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
+        appendProjectToSecureAggregationPipeline(pipelineSecure, fields);
         appendSkipToSecureAggregationPipeline(pipelineSecure, numToSkip);
         appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
         appendSortToSecureAggregationPipeline(pipelineSecure, orderBy);
@@ -206,7 +206,7 @@ public class RedactedDBCollection {
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
         appendQueryToSecureAggregationPipeline(pipelineSecure, query);
-        appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
+        appendProjectToSecureAggregationPipeline(pipelineSecure, fields);
         appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
         appendSortToSecureAggregationPipeline(pipelineSecure, orderBy);
 
@@ -260,7 +260,7 @@ public class RedactedDBCollection {
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
         appendQueryToSecureAggregationPipeline(pipelineSecure, query);
-        appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
+        appendProjectToSecureAggregationPipeline(pipelineSecure, fields);
 
         return _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().outputMode(AggregationOptions.OutputMode.CURSOR).build(), getReadPreference());
     }
@@ -379,7 +379,7 @@ public class RedactedDBCollection {
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
         appendQueryToSecureAggregationPipeline(pipelineSecure, query);
-        appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
+        appendProjectToSecureAggregationPipeline(pipelineSecure, fields);
         appendSortToSecureAggregationPipeline(pipelineSecure, orderBy);
 
         Cursor i = _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().
@@ -543,7 +543,7 @@ public class RedactedDBCollection {
 
     }
 
-    private void appendMatchToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject fields) {
+    private void appendProjectToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject fields) {
         if (fields != null) if (dbObjectHasData(fields)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$project", fields);
 
     }
