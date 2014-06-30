@@ -17,7 +17,8 @@ import java.util.Map;
  *     essential to the usage of FLAC but you might find them useful in porting to legacy code.
  * </p>
  *
- * <p> Assume you have some class that knows the attributes that the user has, here:
+ * <p> Assume you have some class that knows the attributes that the user has,
+ * here we imagine one named UserManagementClass:
  *  <pre>
  *             final UserManagementClass cValue = new UserManagementClass("c_sl_value", Arrays.asList("TK"), Arrays.asList("US"));
  *             //        the key thing is the 2nd and 3rd args give the Citizenship and  Sci values
@@ -42,10 +43,13 @@ import java.util.Map;
 public class FLACPropertyProcessor {
 
     /**
-     * find all getter-Methods that are Annotated with the FLACProperty Annotation and pull out the values
+     * find all getter-Methods that are Annotated with the FLACProperty Annotation and pull out the values.
+     *
+     * <p>See class java docs for a complete piece of code <b>showing how to use this method</b>.</p>
      * @param classInstanceWithAnnotation   where some getters have been labeled with FLACProperty Annotation
      * @return  a map like {c=c_sl_value, relto=[US], sci=[TK]}
      *
+     * @see FLACPropertyProcessor
      * @see FLACProperty
      */
     public static Map<String, Object> findMethodsAnnotatedPullOutSLFieldInfo(FLACPropertyProvider classInstanceWithAnnotation) throws FLACAnnotationException {
