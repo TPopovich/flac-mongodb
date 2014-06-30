@@ -442,6 +442,7 @@ public class RedactedDBCollectionTest extends TestCase {
                 "\"ssn\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"SI\" }, { \"sci\" : \"TK\" } ] ], \"value\" : \"409-56-5309\" }, \"country\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"HCS\" }, { \"sci\" : \"G\" } ] ], \"value\" : \"UNITED STATES\" }, \"favorites\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"SI\" }, { \"sci\" : \"TK\" } ] ], \"cartoonCharacters\" : [ \"Tantor\" ] } }");
     }
 
+    /** contains a 9 line complete FLAC application!   Also proves that a user w/ TS should see more than a user w/ U */
     @Test
     public void sampleApplication() throws Exception {
 
@@ -469,7 +470,22 @@ public class RedactedDBCollectionTest extends TestCase {
         Cursor dbObjectsCursor = redactedDBCollection.find(query, keys);
 
         final DBObject dbObject = dbObjectsCursor.next();
-        System.out.println("First matching document: " + dbObject);
+        System.out.println("First matching document: (c:U/TK) :: " + dbObject);
+
+       ////////////////////////////
+       // The above is a complete FLAC application, what following code does in this test file is prove that a
+       // person with TS  should see more fields.
+       ////////////////////////////
+
+        final UserSecurityAttributesMapCapco userSecurityAttributesTS = new UserSecurityAttributesMapCapco();
+        userSecurityAttributesTS.setClearance("TS");
+        userSecurityAttributesTS.setSci(Arrays.asList("TK"));
+        RedactedDBCollection redactedDBCollectionTS = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        Cursor dbObjectsCursorTS = redactedDBCollectionTS.find(query, keys);
+        final DBObject dbObjectTS = dbObjectsCursorTS.next();
+        System.out.println("First matching document: (c:TS/TK) :: " + dbObjectTS);
+
+        assertNotSame(dbObjectsCursorTS, dbObjectsCursor);                        // a user w/ TS should see more than a user w/ U
     }
 
 }
