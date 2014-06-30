@@ -71,7 +71,6 @@ public class RedactedDBCollection {
     final ReadPreference readPreferenceDefault = ReadPreference.primary();
     ReadPreference readPreference = null;
 
-
     /**
      * The current users SecurityAttributes, which is a application specific mapping of security decls.
      */
@@ -175,7 +174,6 @@ public class RedactedDBCollection {
 
     public Cursor find(DBObject query, DBObject fields, int numToSkip, int batchSize, int limit, int options,
                        ReadPreference readPref, DBObject orderBy) {
-
         if (willTrace()) {
             trace("RedactedDBCollection find: " + namespace + " " + JSON.serialize(query) + " fields " + JSON.serialize(safeDref(fields, EMPTY_OBJECT)));
         }
@@ -198,7 +196,6 @@ public class RedactedDBCollection {
 
     public Cursor find(DBObject query, DBObject fields, int limit,
                        ReadPreference readPref, DBObject orderBy) {
-
         if (willTrace()) {
             trace("RedactedDBCollection find: " + namespace + " " + JSON.serialize(query) + " fields " + JSON.serialize(safeDref(fields, EMPTY_OBJECT)));
         }
@@ -371,7 +368,6 @@ public class RedactedDBCollection {
      */
     DBObject findOne(DBObject query, DBObject fields, DBObject orderBy, ReadPreference readPref,
                      long maxTime, TimeUnit maxTimeUnit) {
-
         if (willTrace()) {
             trace("RedactedDBCollection findOne: " + namespace + " " + JSON.serialize(query) + " fields " + JSON.serialize(safeDref(fields, EMPTY_OBJECT)));
         }
@@ -405,7 +401,6 @@ public class RedactedDBCollection {
      */
     public Cursor aggregate(final List<DBObject> pipeline, final AggregationOptions options,
                             final ReadPreference readPreference) {
-
         if (willTrace()) {
             trace("RedactedDBCollection aggregate: " + namespace);
         }
@@ -534,32 +529,26 @@ public class RedactedDBCollection {
     //  like  Query = "$match", etc.
     /////
     private void appendLimitToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, int limit) {
-        if (limit != 0) if (dbObjectHasData(limit)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$limit", limit);
-
+        if (limit != 0) appendClauseToSecureAggregationPipeline(pipelineSecure, "$limit", limit);
     }
 
     private void appendSkipToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, int numToSkip) {
-        if (numToSkip != 0) if (dbObjectHasData(numToSkip)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$skip", numToSkip);
-
+        if (numToSkip != 0) appendClauseToSecureAggregationPipeline(pipelineSecure, "$skip", numToSkip);
     }
 
     private void appendProjectToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject fields) {
         if (fields != null) if (dbObjectHasData(fields)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$project", fields);
-
     }
 
     private void appendQueryToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject query) {
         if (query != null) if (dbObjectHasData(query)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$match", query);
-
     }
 
     private void appendSortToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject orderBy) {
         if (orderBy != null) if (dbObjectHasData(orderBy)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$sort", orderBy);
-
     }
 
     private void appendClauseToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, final String clauseKey, Object criteria) {
-
         if (criteria != null) {
             DBObject match = new BasicDBObject(clauseKey, criteria);
             pipelineSecure.add(match);
