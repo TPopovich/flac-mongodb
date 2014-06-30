@@ -14,13 +14,13 @@
                                     ]
                                 },
                                 then: true,
-                            else: false
+                                else: false
                             }
                         }
                     }
                 }
             },
             then: "$$DESCEND",
-        else: "$$PRUNE"
+            else: "$$PRUNE"
         }
 }

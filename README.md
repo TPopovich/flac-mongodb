@@ -21,5 +21,10 @@ This effort differs from the one given in project:
 as that one requires changes to the mongodb drivers, and that is harder to do -- any changes need to be
 carefully vetted before release as it could impact many important applications.
 
-This effort is the enable effective FLAC but not design it in a way to be seamless in how you can use
-DBCursor to access i.e. .find and .aggregate have 2 different interfaces and we do not try to unify
+This project's effort is the enable effective usage of FLAC in mongodb. But not design it in a way to be
+as seamless in how you can use this new "DB Collection" as we did in the other project listed above.
+In that other project we created a unified DBCursor to access the output as you would using a native
+DBCollection from mongo.  Here we have the same find() findOne() and aggregate() methods but they
+return Cursor output.  This approach does not require any modification to mongodb's java drivers.
+
+
