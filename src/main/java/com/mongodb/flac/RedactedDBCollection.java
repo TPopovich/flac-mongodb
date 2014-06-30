@@ -35,41 +35,42 @@ import static org.bson.util.Assertions.notNull;
  * tight control on access to data, also known as Field Level Access Control.
  * <p/>
  *
- * <p> The application can then use the DBCollection as they would use a normal DBCollection
+ * <p> The application can then use the this class as they would use a normal DBCollection
  * for the most part.  Since the underlying find operations will be transformed into aggregation pipeline
- * there are a few minor restrictions.
+ * there are a few minor restrictions.  However all find and aggregation
  * </p>
  *
  * <p> As a little code will show, you can now do something like this: </p>
- * <p/>
- * <p> <pre><tt><code>
+ *
+ * <h3>Typical usage pattern:</h3>
+ * <pre>
  *
  *     DBCollection dbCollectionSrc =  ... ;
  *
- *     UserSecurityAttributesMapCapco userSecurityAttributes = new UserSecurityAttributesMapCapco();
+ *     <span style="color:green">UserSecurityAttributesMapCapco</span> userSecurityAttributes = new <span style="color:green">UserSecurityAttributesMapCapco()</span>;
  *
  *     userSecurityAttributes.setClearance("U");     // set the users permissions
  *
  *
  *     // construct a protected interface that honors FLAC security by using a  RedactedDBCollection
- *     RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+ *     <span style="color:green">RedactedDBCollection</span> redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
  *     Cursor dbObjectsCursor = redactedDBCollection.find(query, keys);
  *
  *     final DBObject dbObject = dbObjectsCursor.next();     // the return value depends on the userSecurityAttributes
  *                                                           // and different users may see different components
  *
  *
- * </code></tt></pre>
+ * </pre>
  * </p>
  *
- * <p> See the $redact processor that we created in {@link } which is created for CAPCO
+ * <p> See the <span style="color:green">$redact processor</span> that we created in {@link com.mongodb.flac.capco.UserSecurityAttributesMapCapco} which is created for CAPCO
  *     ( http://fas.org/sgp/othergov/intel/capco_reg.pdf ) like protection, where we have an AND-ing of OR-s so we
  *     can support use cases of i.e. clearance of TS and sci of either TK or G.
  *
  *
  * </p>
  * <p> See a complete 9 line application built on FLAC by looking at some test code found in:
- *     com.mongodb.flac.RedactedDBCollectionTest#sampleApplication(). See that file in the test
+ *     <span style="color:green">com.mongodb.flac.RedactedDBCollectionTest#sampleApplication()</span>. See that file in the test
  *     code subdirectory.
  * </p>
  */

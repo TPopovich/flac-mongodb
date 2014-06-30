@@ -7,10 +7,14 @@ import java.util.*;
 /**
  * UserSecurityAttributesMap for Capco,  describes the User Security attributes for the user.
  *
- * <p> This is a UserSecurityAttributesMapCapco class that implements CAPCO behavior such
+ * <p> This is a UserSecurityAttributesMap class that implements CAPCO behavior such
  * as clearance TS also means a person with TS also inherits clearances (S, C, and U). </p>
  *
+ * <p> It also has getter/setters for the CAPCO attributes of: clearances, sci, and citizenship.</p>
+ *
  * <p>For more info on CAPCO see http://fas.org/sgp/othergov/intel/capco_reg.pdf </p>
+ *
+ * @see com.mongodb.flac.UserSecurityAttributesMap
  *
  */
 public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurityAttributesMap {
@@ -31,7 +35,7 @@ public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurit
 
 
     /**
-     * An easy inline way to create UserSecurityAttributes Mapping:  e.g.
+     * An easy inline way to create UserSecurityAttributes Mappings:  e.g.
      * <p><tt>
      *      new UserSecurityAttributesMapCapco(
      *           "c", "TS",
@@ -112,44 +116,9 @@ public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurit
      */
     public String encodeFlacSecurityAttributes() {
 
-        StringBuilder stringBuilder = new StringBuilder();
-
-        final HashSet<String> secAttrSetFormattedKeyValue = new LinkedHashSet<String>();
-
-        boolean first = true;
-        for (String key : this.keySet()) {
-            final Object obj = this.get(key);
-            List<String> valList = null;
-            if (obj instanceof List) {
-                valList = (List<String>)obj;
-            } else {
-                valList = Arrays.asList( (String) obj );
-            }
-            for (String val : valList) {
-                if (val != null) {
-                    val = val.trim();
-                    final String formattedKeyValue = String.format("%s:%s", key, val);  // generates a term like c:TS
-                    final List<String> userVisibilityStrings = expandVisibilityString(formattedKeyValue);
-                    secAttrSetFormattedKeyValue.addAll(userVisibilityStrings);
-                }
-            }
-        }
-        // Now that we have all terms, format into a list
-        stringBuilder.append("[ ");
-        for (String val : secAttrSetFormattedKeyValue) {
-
-            final String[] splitTerms = val.split(":");
-            final String formattedKeyValue = String.format("{ %s:\"%s\" }", splitTerms[0], splitTerms[1]);  // generates a term like { c:"TS" } from  "c:TS"
-
-            if (!first) {
-                stringBuilder.append(", ");
-            }
-            first = false;
-            stringBuilder.append(formattedKeyValue);
-        }
-        stringBuilder.append(" ]");
-
-        return stringBuilder.toString();
+        // The super class has a plugin call to expandVisibilityString()  so we do not need any changes to the
+        // superclass's method.  All our changes are in the plugin called expandVisibilityString() defined below
+        return super.encodeFlacSecurityAttributes();
 
     }
 

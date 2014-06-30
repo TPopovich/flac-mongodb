@@ -5,7 +5,9 @@ import com.mongodb.flac.converter.FLACPropertyProvider;
 import java.util.*;
 
 /**
- * UserSecurityAttributesMap describes the User Security attributes for the user
+ * UserSecurityAttributesMap describes the User Security attributes for the user.
+ *
+ * @see com.mongodb.flac.capco.UserSecurityAttributesMapCapco
  */
 public class UserSecurityAttributesMap extends HashMap<String, Object> {
     public UserSecurityAttributesMap(int i, float v) {
@@ -74,10 +76,23 @@ public class UserSecurityAttributesMap extends HashMap<String, Object> {
     }
 
     /**
-     * Convert java List of simple strings like: "c:TS"  into an appropriate CapcoVisibilityString.
-     * </tt>
-     * <p> <b>See Examples below for more details:</b>
+     * Convert the list of security attributes into a FLAC encoded string in canonical format.
+     *
+     * <p> The specific list of security attributes is system dependend, below we will describe
+     *     and Capco like Visibility Strings to make a concrete example and also point out that
+     *     you need to expand the setting if
+     *     a setting , below see, c:TS, has domain meaning to be a superset of
+     *     other lower level security settings. E.g. in CAPCO TS also implies
+     *     that you have S C U.
+     *
      * </p>
+     *
+     * java List of simple strings like: "c:TS"  into an appropriate CapcoVisibilityString.
+     *
+     *
+     * </tt>
+     * <h3>See Examples below for more details:</h3>
+     *
      * <p>
      * <tt>
      * UserSecurityAttributes.EncodingUtils.expandCapcoVisibility(new String[]{"c:TS", "c:S"})
