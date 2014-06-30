@@ -17,6 +17,26 @@ import java.util.Map;
  *     essential to the usage of FLAC but you might find them useful in porting to legacy code.
  * </p>
  *
+ * <p> Assume you have some class that knows the attributes that the user has, here:
+ *  <pre>
+ *             final UserManagementClass cValue = new UserManagementClass("c_sl_value", Arrays.asList("TK"), Arrays.asList("US"));
+ *             //        the key thing is the 2nd and 3rd args give the Citizenship and  Sci values
+ *
+ *             // The following statement will incorporate those values into the   UserSecurityAttributesMapCapco
+ *             // class:
+ *             Map<String, Object> actualAnnotatedValues = FLACPropertyProcessor.findMethodsAnnotatedPullOutSLFieldInfo(cValue);
+ *             UserSecurityAttributesMapCapco userSecurityAttributesMap = new UserSecurityAttributesMapCapco(actualAnnotatedValues);
+ *
+ *             Assert.assertEquals(Arrays.asList("US"), userSecurityAttributesMap.getCitizenship() );
+ *             Assert.assertEquals(Arrays.asList("TK"), userSecurityAttributesMap.getSci() );
+ *
+ *
+ *  </pre>
+ *
+ *  See test code in com.mongodb.flac.converter.FLACPropertyProcessorTest#testUsingPropProcToInject()
+ *  for a complete working version of the above code.
+ *
+ * </p>
  *
  */
 public class FLACPropertyProcessor {

@@ -56,7 +56,7 @@ public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurit
     private List<String> citizenship;
 
     public String getClearance() {
-        return clearance;
+        return (String) this.get("c");
     }
 
     public void setClearance(String clearance) {
@@ -65,7 +65,7 @@ public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurit
     }
 
     public List<String> getSci() {
-        return sci;
+        return (List<String>) this.get("sci");
     }
 
     public void setSci(List<String> sci) {
@@ -73,9 +73,7 @@ public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurit
         this.put("sci", sci) ;
     }
 
-    public List<String> getCitizenship() {
-        return citizenship;
-    }
+    public List<String> getCitizenship() { return (List<String>) this.get("citizenship");}
 
     public void setCitizenship(List<String> citizenship) {
         this.citizenship = citizenship;
@@ -116,8 +114,8 @@ public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurit
      */
     public String encodeFlacSecurityAttributes() {
 
-        // The super class has a plugin call to expandVisibilityString()  so we do not need any changes to the
-        // superclass's method.  All our changes are in the plugin called expandVisibilityString() defined below
+        // the super class has a plugin call to expandVisibilityString()  so we do not need any changes to the
+        // superclass's method.  All our changes are i
         return super.encodeFlacSecurityAttributes();
 
     }

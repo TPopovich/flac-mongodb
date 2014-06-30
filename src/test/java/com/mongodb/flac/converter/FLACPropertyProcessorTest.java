@@ -1,5 +1,7 @@
 package com.mongodb.flac.converter;
 
+import com.mongodb.flac.UserSecurityAttributesMap;
+import com.mongodb.flac.capco.UserSecurityAttributesMapCapco;
 import com.mongodb.flac.converter.FLACPropertyProvider;
 import com.mongodb.flac.converter.FLACAnnotationException;
 import com.mongodb.flac.converter.FLACProperty;
@@ -65,6 +67,20 @@ public class FLACPropertyProcessorTest {
 
 
     }
+
+    @Test
+    public void testUsingPropProcToInject() throws FLACAnnotationException {
+
+        final TestClass1 cValue = new TestClass1("c_sl_value", Arrays.asList("TK"), Arrays.asList("US"));
+        Map<String, Object> actualAnnotatedValues = FLACPropertyProcessor.findMethodsAnnotatedPullOutSLFieldInfo(cValue);
+
+        UserSecurityAttributesMapCapco userSecurityAttributesMap = new UserSecurityAttributesMapCapco(actualAnnotatedValues);
+
+        Assert.assertEquals(Arrays.asList("US"), userSecurityAttributesMap.getCitizenship() );
+        Assert.assertEquals(Arrays.asList("TK"), userSecurityAttributesMap.getSci() );
+
+    }
+
 
     private static class TestRepr1 {
 
