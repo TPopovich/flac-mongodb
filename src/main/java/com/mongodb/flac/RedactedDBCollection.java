@@ -625,6 +625,11 @@ public class RedactedDBCollection {
     }
 
 
+    /////
+    //  Following are all the operations that can be added to a MongoDB aggregation pipeline that are supported:
+    //  appendClauseToSecureAggregationPipeline() can add any clause, but we have named all the key clauses below,
+    //  like  Query = "$match", etc.
+    /////
     private void appendLimitToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, int limit) {
         if (dbObjectHasData(limit)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$limit", limit);
 
@@ -679,6 +684,7 @@ public class RedactedDBCollection {
         }
         return false;
     }
+
 
     /**
      * get the provided or default ReadPreference (currently ReadPreference.primary() ).
@@ -743,7 +749,7 @@ public class RedactedDBCollection {
      */
     public static <T> T checkNotNull(T reference, String errorMessage) {
         if (reference == null) {
-            throw new NullPointerException(String.valueOf(errorMessage));
+            throw new IllegalArgumentException(String.valueOf(errorMessage));
         }
         return reference;
     }
