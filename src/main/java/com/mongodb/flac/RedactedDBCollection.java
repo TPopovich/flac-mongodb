@@ -26,6 +26,19 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * <p/>
  * <p> As a little code will show, you can now do something like this: </p>
  * <p/>
+ * <h3>Overview:</h3>
+ * This class looks large but it not.  Picture a wrapped DBCollection.  Imagine all calls that deal
+ * with a find or aggregation operation on that DBCollection getting trapped and instead converted
+ * safely into a new aggregation pipeline that as its first stage has a carefully crafted
+ * $redact clause to honor CAPCO like security controls.  Then the output from mongodb will only
+ * contain fields and subdocuments that are able to be given to the current user.
+ *
+ * <p> Q: where / how does aggregation know the users ability to see certain fields?
+ *     A: we have a class com.mongodb.flac.UserSecurityAttributesMap  that stores them. (Also see
+ *     the CAPCO specific subclass com.mongodb.flac.capco.UserSecurityAttributesMapCapco
+ * </p>
+ *
+ * <p/>
  * <h3>Typical usage pattern:</h3>
  * <pre>
  *
@@ -57,6 +70,9 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * <span style="color:green">com.mongodb.flac.RedactedDBCollectionTest#sampleApplication()</span>. See that file in the test
  * code subdirectory.
  * </p>
+ *
+ * @see com.mongodb.flac.capco.UserSecurityAttributesMapCapco
+ * @see com.mongodb.flac.UserSecurityAttributesMap
  */
 @SuppressWarnings("deprecation")
 public class RedactedDBCollection {
@@ -416,7 +432,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Method implements aggregation framework.
+     * Do aggregation pipeline in a secure manner.
      *
      * @param firstOp       requisite first operation to be performed in the aggregation pipeline
      * @param additionalOps additional operations to be performed in the aggregation pipeline
@@ -435,7 +451,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Method implements aggregation framework.
+     * Do aggregation pipeline in a secure manner.
      *
      * @param pipeline operations to be performed in the aggregation pipeline
      * @return the aggregation's result set
@@ -447,7 +463,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Method implements aggregation framework.
+     * Do aggregation pipeline in a secure manner.
      *
      * @param pipeline       operations to be performed in the aggregation pipeline
      * @param readPreference the read preference specifying where to run the query
@@ -464,7 +480,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Method implements aggregation framework.
+     * Do aggregation pipeline in a secure manner.
      *
      * @param pipeline operations to be performed in the aggregation pipeline
      * @param options  options to apply to the aggregation
