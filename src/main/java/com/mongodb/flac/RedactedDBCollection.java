@@ -24,8 +24,6 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * there are a few minor restrictions.  However all find and aggregation
  * </p>
  * <p/>
- * <p> As a little code will show, you can now do something like this: </p>
- * <p/>
  * <h3>Overview:</h3>
  * This class looks large but it not.  Picture a wrapped DBCollection.  Imagine all calls that deal
  * with a find or aggregation operation on that DBCollection getting trapped and instead converted
@@ -38,6 +36,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  *     the CAPCO specific subclass com.mongodb.flac.capco.UserSecurityAttributesMapCapco
  * </p>
  *
+ * <p/>
+ * <p> As a little code will show, you can now do something like this: </p>
  * <p/>
  * <h3>Typical usage pattern:</h3>
  * <pre>
