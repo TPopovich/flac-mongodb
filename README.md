@@ -6,7 +6,8 @@ FLAC for mongodb - provides a way to do field level access control in mongodb us
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         // below we use the UserSecurityAttributesMapCapco that knows how to do our application logic of
         // c:TS also maps to c:S,  c:C, and  c:U
-        final UserSecurityAttributesMap userSecurityAttributes = new UserSecurityAttributesMapCapco("c" , "TS");
+        final UserSecurityAttributesMap userSecurityAttributes = new UserSecurityAttributesMapCapco();
+        userSecurityAttributes.setClearance("TS");
 
         RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
         Cursor dbObjects = redactedDBCollection.find(query, keys);
