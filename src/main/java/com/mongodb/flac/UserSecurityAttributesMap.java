@@ -1,13 +1,12 @@
 package com.mongodb.flac;
 
-import com.mongodb.flac.converter.FLACPropertyProvider;
 
 import java.util.*;
 
 /**
  * UserSecurityAttributesMap describes the User Security attributes for the user.
  *
- * @see com.mongodb.flac.capco.UserSecurityAttributesMapCapco
+ * @see com.mongodb.flac.capco.UserSecurityAttributesMapCapco   for a CAPCO specific subclass
  */
 public class UserSecurityAttributesMap extends HashMap<String, Object> {
 
