@@ -19,6 +19,7 @@ public class UserSecurityAttributesMap extends HashMap<String, Object> {
     }
 
 
+    //    The following VARARG style constructor is commented out, but you might find it useful.
     //    /**
     //     * An easy inline way to create UserSecurityAttributes Mapping:  e.g.
     //     * <p><tt>
@@ -57,8 +58,9 @@ public class UserSecurityAttributesMap extends HashMap<String, Object> {
     /**
      * Convert the list of security attributes into a FLAC encoded string in canonical format.
      *
-     * Specifically convert a java list of simple strings like: "c:TS" (from our long running sample
-     * application we have been discussing in the documentation) into an appropriate canonical VisibilityString.
+     * <p>Specifically look at the key/value pairs stored in this Map.  And then
+     * convert a java list of simple strings like: key:value, e.g. "c:TS" (from our long running sample
+     * application we have been discussing in the documentation) into an appropriate canonical VisibilityString.</p>m
      *
      * <p> The specific list of security attributes is system dependend, below we will describe
      *     and Capco like Visibility Strings to make a concrete example and also point out that

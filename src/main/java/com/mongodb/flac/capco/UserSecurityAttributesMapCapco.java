@@ -52,7 +52,14 @@ public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurit
     }
 
     /**
-     * Convert java List of simple strings like: "c:TS"  into an appropriate CapcoVisibilityString.
+     * Convert java List of simple strings like: "c:TS"  formed from the Map of key/value pairs
+     * into encoded string in canonical format,
+     * and one appropriate for a Capco VisibilityString.
+     *
+     * <p>Specifically look at the key/value pairs stored in this Map.  And then
+     * convert a java list of simple strings like: key:value, e.g. "c:TS" (from our long running sample
+     * application we have been discussing in the documentation) into an appropriate canonical VisibilityString.</p>
+     *
      * </tt>
      * <p> <b>See Examples below for more details:</b>
      * </p>
