@@ -462,23 +462,12 @@ public class RedactedDBCollectionTest extends TestCase {
     }
 
     private static DBObject getRecordOne() {
-        if (0==1) return (DBObject) JSON.parse("{ \"_id\" : \"5375052930040f83a06f115a\", \"firstName\" : \"Sheldon\", \"quantity\": { \"sl\": [  [ { \"c\" : \"TS\" } ]  ], " +
-                "\"value\": \"33\"}, \"lastName\" : \"Humphrey\", " +
-                "\"ssn\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"G\" } ] ], \"value\" : \"354-61-8555\" }, \"country\" : { \"sl\" : [ [ { \"c\" : \"S\" } ], [ { \"sci\" : \"HCS\" } ] ], \"value\" : \"IRAQ\" }, \"favorites\" : { \"sl\" : [ [ { \"c\" : \"S\" } ] ], \"cartoonCharacters\" : [ \"Diablo The Raven \", \"Rabbit\", \"bar\" ] }, \"foo\" : \"bar\" }");
-        if (0==1) return (DBObject) JSON.parse("{ \"_id\" : \"5375052930040f83a06f115a\", \"firstName\" : \"Sheldon\", \"tom\": \"33\", \"lastName\" : \"Humphrey\", " +
-                "\"ssn\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"G\" } ] ], \"value\" : \"354-61-8555\" }, \"country\" : { \"sl\" : [ [ { \"c\" : \"S\" } ], [ { \"sci\" : \"HCS\" } ] ], \"value\" : \"IRAQ\" }, \"favorites\" : { \"sl\" : [ [ { \"c\" : \"S\" } ] ], \"cartoonCharacters\" : [ \"Diablo The Raven \", \"Rabbit\", \"bar\" ] }, \"foo\" : \"bar\" }");
-        return (DBObject) JSON.parse("{ \"_id\" : \"5375052930040f83a06f115a\", \"firstName\" : \"Sheldon\", \"lastName\" : \"Humphrey\", " +
+           return (DBObject) JSON.parse("{ \"_id\" : \"5375052930040f83a06f115a\", \"firstName\" : \"Sheldon\", \"lastName\" : \"Humphrey\", " +
                 "\"ssn\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"G\" } ] ], \"value\" : \"354-61-8555\" }, \"country\" : { \"sl\" : [ [ { \"c\" : \"S\" } ], [ { \"sci\" : \"HCS\" } ] ], \"value\" : \"IRAQ\" }, \"favorites\" : { \"sl\" : [ [ { \"c\" : \"S\" } ] ], \"cartoonCharacters\" : [ \"Diablo The Raven \", \"Rabbit\", \"bar\" ] }, \"foo\" : \"bar\" }");
     }
 
     private static DBObject getRecordTwo() {
-        // "quantity": { "sl": [  [ { "c" : "TS" } ]  ], "value": "33"}
-        if (0==1) return (DBObject) JSON.parse("{ \"_id\" : \"5375052930040f83a06f1160\", \"firstName\" : \"Alice\", \"quantity\": { \"sl\": [  [ { \"c\" : \"TS\" } ]  ], " +
-                "\"value\": \"33\"}, \"lastName\" : \"Fuentes\", " +
-                "\"ssn\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"SI\" }, { \"sci\" : \"TK\" } ] ], \"value\" : \"409-56-5309\" }, \"country\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"HCS\" }, { \"sci\" : \"G\" } ] ], \"value\" : \"UNITED STATES\" }, \"favorites\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"SI\" }, { \"sci\" : \"TK\" } ] ], \"cartoonCharacters\" : [ \"Tantor\" ] } }");
-        if (0==1) return (DBObject) JSON.parse("{ \"_id\" : \"5375052930040f83a06f1160\", \"firstName\" : \"Alice\", \"tom\": \"33\", \"lastName\" : \"Fuentes\", " +
-                "\"ssn\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"SI\" }, { \"sci\" : \"TK\" } ] ], \"value\" : \"409-56-5309\" }, \"country\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"HCS\" }, { \"sci\" : \"G\" } ] ], \"value\" : \"UNITED STATES\" }, \"favorites\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"SI\" }, { \"sci\" : \"TK\" } ] ], \"cartoonCharacters\" : [ \"Tantor\" ] } }");
-        return (DBObject) JSON.parse("{ \"_id\" : \"5375052930040f83a06f1160\", \"firstName\" : \"Alice\", \"lastName\" : \"Fuentes\", " +
+         return (DBObject) JSON.parse("{ \"_id\" : \"5375052930040f83a06f1160\", \"firstName\" : \"Alice\", \"lastName\" : \"Fuentes\", " +
                 "\"ssn\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"SI\" }, { \"sci\" : \"TK\" } ] ], \"value\" : \"409-56-5309\" }, \"country\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"HCS\" }, { \"sci\" : \"G\" } ] ], \"value\" : \"UNITED STATES\" }, \"favorites\" : { \"sl\" : [ [ { \"c\" : \"TS\" } ], [ { \"sci\" : \"SI\" }, { \"sci\" : \"TK\" } ] ], \"cartoonCharacters\" : [ \"Tantor\" ] } }");
     }
 
