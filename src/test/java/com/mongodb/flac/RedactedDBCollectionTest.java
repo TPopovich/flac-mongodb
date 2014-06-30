@@ -460,9 +460,8 @@ public class RedactedDBCollectionTest extends TestCase {
         // here we have a user with clearance of "TS"  and they also have sci: TK
         ////
         final UserSecurityAttributesMapCapco userSecurityAttributes = new UserSecurityAttributesMapCapco();
-        // same as with:
         userSecurityAttributes.setClearance("U");
-        userSecurityAttributes.setSci(Arrays.asList("TK2"));
+        userSecurityAttributes.setSci(Arrays.asList("TK"));
 
         // Now we get a new secure redactedDBCollection, that will honor the above UserSecurityAttributesMap
         // and only provide fields that this specific user is allowed to access:
