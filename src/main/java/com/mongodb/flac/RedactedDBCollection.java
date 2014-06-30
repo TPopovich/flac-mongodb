@@ -31,6 +31,10 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * $redact clause to honor CAPCO like security controls.  Then the output from mongodb will only
  * contain fields and subdocuments that are able to be given to the current user.
  *
+ * <p/>
+ *  The file has every permutation of find/aggregation permitted on DBCollection, but if you only
+ *  need a few variations, you can safely comment out or delete the ones your do not need.
+ *
  * <p> Q: where / how does aggregation know the users ability to see certain fields?
  *     A: we have a class com.mongodb.flac.UserSecurityAttributesMap  that stores them. (Also see
  *     the CAPCO specific subclass com.mongodb.flac.capco.UserSecurityAttributesMapCapco
