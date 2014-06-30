@@ -1,7 +1,6 @@
 package com.mongodb.flac;
 
 import com.mongodb.*;
-import com.mongodb.flac.UserSecurityAttributesMap;
 import com.mongodb.util.JSON;
 
 import java.util.*;
@@ -9,16 +8,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
-import static com.mongodb.QueryResultIterator.chooseBatchSize;
-import static com.mongodb.WriteCommandResultHelper.getBulkWriteException;
-import static com.mongodb.WriteCommandResultHelper.getBulkWriteResult;
-import static com.mongodb.WriteCommandResultHelper.hasError;
-import static com.mongodb.WriteRequest.Type.*;
-import static com.mongodb.WriteRequest.Type.INSERT;
-import static com.mongodb.WriteRequest.Type.REPLACE;
-*/
-import static java.lang.String.format;
+
 import org.slf4j.LoggerFactory;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -137,40 +127,6 @@ public class RedactedDBCollection {
         namespace = wrappedDBCollection.getFullName();
     }
 
-    /**
-     * Builder to construct a wrapper for safe access a standard MongoDB collection {@link com.mongodb.DBCollection} that
-     * considers the information in the document honoring the
-     * user specified FLAC "sl" (field level access control - security
-     * level) field
-     * before accessing documents from that collection. No operation is
-     * actually performed on the database with this call,
-     * we access it in a lazy manner.
-     * <p/>
-     * <p/>
-     * <p>
-     * RedactedDBCollection.fromCollection( db.getCollection("persons") , Map userSecurityAttributes );
-     * above is a simple use case.  Given a DBCollection for the "persons" mongo collection
-     * and a set of UserSecurityAttributes, e.g.
-     * <pre><tt>
-     *        clearance="TS"
-     *        sci=[ "TK", "SI", "G", "HCS" ]
-     *        countries=["US"]
-     * </tt></pre>
-     * <p/>
-     * </p>
-     *
-     * @param wrappedDBCollection    the wrapped DB collection on which we operate
-     * @param userSecurityAttributes a Map of attributes, e.g.  clearance="TS", sci=[ "TK", "SI", "G", "HCS" ] etc
-     *                               that provide the UserSecurityAttributes.  A detailed list of attributes might be:
-     *                               <pre><tt>
-     *                                                                                                                                                           clearance="TS"
-     *                                                                                                                                                           sci=[ "TK", "SI", "G", "HCS" ]
-     *                                                                                                                                                           countries=["US"]
-     *                                                                                                                                                    </tt></pre>
-     */
-    public static RedactedDBCollection fromCollection(DBCollection wrappedDBCollection, UserSecurityAttributesMap userSecurityAttributes) {
-        return new RedactedDBCollection(wrappedDBCollection, userSecurityAttributes);
-    }
 
     private DBCollection _wrapped;
     private final String namespace;

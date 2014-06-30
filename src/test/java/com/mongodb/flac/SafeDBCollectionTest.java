@@ -107,7 +107,7 @@ public class SafeDBCollectionTest extends TestCase {
         userAttributes.put("sci", Arrays.asList("TK", "SI", "G", "HCS"));
         userAttributes.put("countries", Arrays.asList("US"));
 
-        RedactedDBCollection safeDBCollection = RedactedDBCollection.fromCollection(wrappedDBCollection, userAttributes);
+        RedactedDBCollection safeDBCollection = new RedactedDBCollection(wrappedDBCollection, userAttributes);
         // test RedactedDBCollection
 
         DBObject customerQuery = new BasicDBObject("firstname", "Tom");
