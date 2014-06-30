@@ -51,16 +51,12 @@ public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurit
         super(key1, value1, keyValuePairs);
     }
 
-    private String clearance;
-    private List<String> sci;
-    private List<String> citizenship;
 
     public String getClearance() {
         return (String) this.get("c");
     }
 
     public void setClearance(String clearance) {
-        this.clearance = clearance;
         this.put("c", clearance) ;
     }
 
@@ -69,14 +65,12 @@ public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurit
     }
 
     public void setSci(List<String> sci) {
-        this.sci = sci;
         this.put("sci", sci) ;
     }
 
     public List<String> getCitizenship() { return (List<String>) this.get("citizenship");}
 
     public void setCitizenship(List<String> citizenship) {
-        this.citizenship = citizenship;
         this.put("citizenship", citizenship) ;
     }
 
