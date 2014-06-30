@@ -114,10 +114,10 @@ public class RedactedDBCollection {
      * @param userSecurityAttributes a Map of attributes, e.g.  clearance="TS", sci=[ "TK", "SI", "G", "HCS" ] etc
      *                               that provide the UserSecurityAttributes.  A detailed list of attributes might be:
      *                               <pre><tt>
-     *                                                                                                  clearance="TS"
-     *                                                                                                  sci=[ "TK", "SI", "G", "HCS" ]
-     *                                                                                                  countries=["US"]
-     *                                                                                           </tt></pre>
+     *                                      clearance="TS"
+     *                                      sci=[ "TK", "SI", "G", "HCS" ]
+     *                                      countries=["US"]
+     *                               </tt></pre>
      */
     public RedactedDBCollection(DBCollection wrappedDBCollection, UserSecurityAttributesMap userSecurityAttributes) {
         checkNotNull(wrappedDBCollection, "wrappedDBCollection can't be null");
@@ -139,18 +139,10 @@ public class RedactedDBCollection {
 
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
-        if (query != null) {
-            appendQueryToSecureAggregationPipeline(pipelineSecure, query);
-        }
-        if (fields != null) {
-            appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
-        }
-        if (numToSkip != 0) {
-            appendSkipToSecureAggregationPipeline(pipelineSecure, numToSkip);
-        }
-        if (limit != 0) {
-            appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
-        }
+        appendQueryToSecureAggregationPipeline(pipelineSecure, query);
+        appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
+        appendSkipToSecureAggregationPipeline(pipelineSecure, numToSkip);
+        appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
 
         return _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().
                 batchSize(batchSize).
@@ -170,18 +162,10 @@ public class RedactedDBCollection {
 
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
-        if (query != null) {
-            appendQueryToSecureAggregationPipeline(pipelineSecure, query);
-        }
-        if (fields != null) {
-            appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
-        }
-        if (numToSkip != 0) {
-            appendSkipToSecureAggregationPipeline(pipelineSecure, numToSkip);
-        }
-        if (limit != 0) {
-            appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
-        }
+        appendQueryToSecureAggregationPipeline(pipelineSecure, query);
+        appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
+        appendSkipToSecureAggregationPipeline(pipelineSecure, numToSkip);
+        appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
 
         return _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().
                 batchSize(batchSize).
@@ -198,21 +182,11 @@ public class RedactedDBCollection {
 
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
-        if (query != null) {
-            appendQueryToSecureAggregationPipeline(pipelineSecure, query);
-        }
-        if (fields != null) {
-            appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
-        }
-        if (numToSkip != 0) {
-            appendSkipToSecureAggregationPipeline(pipelineSecure, numToSkip);
-        }
-        if (limit != 0) {
-            appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
-        }
-        if (orderBy != null) {
-            appendSortToSecureAggregationPipeline(pipelineSecure, orderBy);
-        }
+        appendQueryToSecureAggregationPipeline(pipelineSecure, query);
+        appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
+        appendSkipToSecureAggregationPipeline(pipelineSecure, numToSkip);
+        appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
+        appendSortToSecureAggregationPipeline(pipelineSecure, orderBy);
 
         return _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().
                 batchSize(batchSize).
@@ -231,18 +205,10 @@ public class RedactedDBCollection {
 
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
-        if (query != null) {
-            appendQueryToSecureAggregationPipeline(pipelineSecure, query);
-        }
-        if (fields != null) {
-            appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
-        }
-        if (limit != 0) {
-            appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
-        }
-        if (orderBy != null) {
-            appendSortToSecureAggregationPipeline(pipelineSecure, orderBy);
-        }
+        appendQueryToSecureAggregationPipeline(pipelineSecure, query);
+        appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
+        appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
+        appendSortToSecureAggregationPipeline(pipelineSecure, orderBy);
 
         return _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().
                 outputMode(AggregationOptions.OutputMode.CURSOR).
@@ -255,7 +221,6 @@ public class RedactedDBCollection {
      *
      * @param query A document outlining the search query
      * @return an iterator over the results
-     * @mongodb.driver.manual tutorial/query-documents/ Query
      */
     public Cursor find(DBObject query) {
         return find(query, null);
@@ -286,7 +251,6 @@ public class RedactedDBCollection {
      *               but for security the redact will be first, so $text can not be utilized.
      * @param fields fields to return
      * @return a cursor to iterate over results
-     * @mongodb.driver.manual tutorial/query-documents/ Query
      */
     public Cursor find(DBObject query, DBObject fields) {
         if (willTrace()) {
@@ -295,12 +259,8 @@ public class RedactedDBCollection {
 
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
-        if (query != null) {
-            appendQueryToSecureAggregationPipeline(pipelineSecure, query);
-        }
-        if (fields != null) {
-            appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
-        }
+        appendQueryToSecureAggregationPipeline(pipelineSecure, query);
+        appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
 
         return _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().outputMode(AggregationOptions.OutputMode.CURSOR).build(), getReadPreference());
     }
@@ -418,15 +378,9 @@ public class RedactedDBCollection {
 
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
-        if (query != null) {
-            appendQueryToSecureAggregationPipeline(pipelineSecure, query);
-        }
-        if (fields != null) {
-            appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
-        }
-        if (orderBy != null) {
-            appendSortToSecureAggregationPipeline(pipelineSecure, orderBy);
-        }
+        appendQueryToSecureAggregationPipeline(pipelineSecure, query);
+        appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
+        appendSortToSecureAggregationPipeline(pipelineSecure, orderBy);
 
         Cursor i = _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().
                 outputMode(AggregationOptions.OutputMode.CURSOR).
@@ -456,15 +410,8 @@ public class RedactedDBCollection {
             trace("RedactedDBCollection aggregate: " + namespace);
         }
 
-        if (options == null) {
-            throw new IllegalArgumentException("options can not be null");
-        }
-        if (pipeline == null) {
-            throw new IllegalArgumentException("pipeline can not be null");
-        }
-        if (options == null) {
-            throw new IllegalArgumentException("options can not be null");
-        }
+        checkNotNull(pipeline,"pipeline can not be null");
+        checkNotNull(options,"options can not be null");
 
         final List<DBObject> pipelineSecure = getSecureAggregationPipelineForUser();
         pipelineSecure.addAll(pipeline);
@@ -587,27 +534,27 @@ public class RedactedDBCollection {
     //  like  Query = "$match", etc.
     /////
     private void appendLimitToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, int limit) {
-        if (dbObjectHasData(limit)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$limit", limit);
+        if (limit != 0) if (dbObjectHasData(limit)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$limit", limit);
 
     }
 
     private void appendSkipToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, int numToSkip) {
-        if (dbObjectHasData(numToSkip)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$skip", numToSkip);
+        if (numToSkip != 0) if (dbObjectHasData(numToSkip)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$skip", numToSkip);
 
     }
 
     private void appendMatchToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject fields) {
-        if (dbObjectHasData(fields)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$project", fields);
+        if (fields != null) if (dbObjectHasData(fields)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$project", fields);
 
     }
 
     private void appendQueryToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject query) {
-        if (dbObjectHasData(query)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$match", query);
+        if (query != null) if (dbObjectHasData(query)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$match", query);
 
     }
 
     private void appendSortToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject orderBy) {
-        if (dbObjectHasData(orderBy)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$sort", orderBy);
+        if (orderBy != null) if (dbObjectHasData(orderBy)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$sort", orderBy);
 
     }
 
@@ -690,9 +637,6 @@ public class RedactedDBCollection {
         TRACE_LOGGER.log(TRACE_LEVEL, s);
     }
 
-    private Logger getLogger() {
-        return TRACE_LOGGER;
-    }
 
 
     /**
