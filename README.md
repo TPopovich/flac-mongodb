@@ -13,7 +13,7 @@ FLAC for mongodb - provides a way to do field level access control in mongodb us
         Cursor dbObjects = redactedDBCollection.aggregate( ... );
 
 notice that we have a redactedDBCollection.find working on a DBCollection that is protected by FLAC access controls
-and that the find is really based on aggregate using $redac to limit sub-documents as needed
+and that the find is really based on aggregate using $redact to limit sub-documents as needed
 
 
 This effort differs from the one given in project:
