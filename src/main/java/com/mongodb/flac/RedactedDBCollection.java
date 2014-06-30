@@ -19,29 +19,23 @@ import static com.mongodb.WriteRequest.Type.INSERT;
 import static com.mongodb.WriteRequest.Type.REPLACE;
 */
 import static java.lang.String.format;
-import com.google.common.base.*;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.bson.util.Assertions.isTrue;
-import static org.bson.util.Assertions.notNull;
 
 /**
  * RedactedDBCollection is a class that acts like a DBCollection. It wraps a standard mongodb DBCollection.
  * But this class honors user specific FLAC security controls.  This allows
  * tight control on access to data, also known as Field Level Access Control.
  * <p/>
- *
+ * <p/>
  * <p> The application can then use the this class as they would use a normal DBCollection
  * for the most part.  Since the underlying find operations will be transformed into aggregation pipeline
  * there are a few minor restrictions.  However all find and aggregation
  * </p>
- *
+ * <p/>
  * <p> As a little code will show, you can now do something like this: </p>
- *
+ * <p/>
  * <h3>Typical usage pattern:</h3>
  * <pre>
  *
@@ -62,20 +56,25 @@ import static org.bson.util.Assertions.notNull;
  *
  * </pre>
  * </p>
- *
+ * <p/>
  * <p> See the <span style="color:green">$redact processor</span> that we created in {@link com.mongodb.flac.capco.UserSecurityAttributesMapCapco} which is created for CAPCO
- *     ( http://fas.org/sgp/othergov/intel/capco_reg.pdf ) like protection, where we have an AND-ing of OR-s so we
- *     can support use cases of i.e. clearance of TS and sci of either TK or G.
- *
- *
+ * ( http://fas.org/sgp/othergov/intel/capco_reg.pdf ) like protection, where we have an AND-ing of OR-s so we
+ * can support use cases of i.e. clearance of TS and sci of either TK or G.
+ * <p/>
+ * <p/>
  * </p>
  * <p> See a complete 9 line application built on FLAC by looking at some test code found in:
- *     <span style="color:green">com.mongodb.flac.RedactedDBCollectionTest#sampleApplication()</span>. See that file in the test
- *     code subdirectory.
+ * <span style="color:green">com.mongodb.flac.RedactedDBCollectionTest#sampleApplication()</span>. See that file in the test
+ * code subdirectory.
  * </p>
  */
 @SuppressWarnings("deprecation")
 public class RedactedDBCollection {
+
+    // typedef  alias - an Aggregation Pipeline is an ArrayList of DBObject's  - this is just a name for an  ArrayList<DBObject>
+    //                  destined to be the list given to aggregate as the job pipeline of operations...
+    public static class SecureAggregationPipeline extends ArrayList<DBObject> {
+    }
 
     protected static final org.slf4j.Logger logger = LoggerFactory.getLogger(RedactedDBCollection.class);
 
@@ -125,14 +124,14 @@ public class RedactedDBCollection {
      * @param userSecurityAttributes a Map of attributes, e.g.  clearance="TS", sci=[ "TK", "SI", "G", "HCS" ] etc
      *                               that provide the UserSecurityAttributes.  A detailed list of attributes might be:
      *                               <pre><tt>
-     *                                                                                               clearance="TS"
-     *                                                                                               sci=[ "TK", "SI", "G", "HCS" ]
-     *                                                                                               countries=["US"]
-     *                                                                                        </tt></pre>
+     *                                                                                                  clearance="TS"
+     *                                                                                                  sci=[ "TK", "SI", "G", "HCS" ]
+     *                                                                                                  countries=["US"]
+     *                                                                                           </tt></pre>
      */
     public RedactedDBCollection(DBCollection wrappedDBCollection, UserSecurityAttributesMap userSecurityAttributes) {
-        Preconditions.checkNotNull(wrappedDBCollection, "wrappedDBCollection can't be null");
-        this.userSecurityAttributes = Preconditions.checkNotNull(userSecurityAttributes, "userSecurityAttributes can't be null");
+        checkNotNull(wrappedDBCollection, "wrappedDBCollection can't be null");
+        this.userSecurityAttributes = checkNotNull(userSecurityAttributes, "userSecurityAttributes can't be null");
 
         this._wrapped = wrappedDBCollection;
         namespace = wrappedDBCollection.getFullName();
@@ -164,17 +163,16 @@ public class RedactedDBCollection {
      * @param userSecurityAttributes a Map of attributes, e.g.  clearance="TS", sci=[ "TK", "SI", "G", "HCS" ] etc
      *                               that provide the UserSecurityAttributes.  A detailed list of attributes might be:
      *                               <pre><tt>
-     *                                                                                               clearance="TS"
-     *                                                                                               sci=[ "TK", "SI", "G", "HCS" ]
-     *                                                                                               countries=["US"]
-     *                                                                                        </tt></pre>
+     *                                                                                                                                                           clearance="TS"
+     *                                                                                                                                                           sci=[ "TK", "SI", "G", "HCS" ]
+     *                                                                                                                                                           countries=["US"]
+     *                                                                                                                                                    </tt></pre>
      */
     public static RedactedDBCollection fromCollection(DBCollection wrappedDBCollection, UserSecurityAttributesMap userSecurityAttributes) {
         return new RedactedDBCollection(wrappedDBCollection, userSecurityAttributes);
     }
 
     private DBCollection _wrapped;
-    private UserSecurityAttributesMap _userSecurityString;
     private final String namespace;
 
     public Cursor find(DBObject query, DBObject fields, int numToSkip, int batchSize, int limit, int options,
@@ -186,16 +184,16 @@ public class RedactedDBCollection {
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
         if (query != null) {
-            pipelineSecure.appendQuery(query);
+            appendQueryToSecureAggregationPipeline(pipelineSecure, query);
         }
         if (fields != null) {
-            pipelineSecure.appendMatch(fields);
+            appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
         }
         if (numToSkip != 0) {
-            pipelineSecure.appendSkip(numToSkip);
+            appendSkipToSecureAggregationPipeline(pipelineSecure, numToSkip);
         }
         if (limit != 0) {
-            pipelineSecure.appendLimit(limit);
+            appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
         }
 
         return _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().
@@ -203,6 +201,8 @@ public class RedactedDBCollection {
                 outputMode(AggregationOptions.OutputMode.CURSOR).
                 build(), readPref);
     }
+
+
 
 
     public Cursor find(DBObject query, DBObject fields, int numToSkip, int batchSize, int limit, int options,
@@ -215,16 +215,16 @@ public class RedactedDBCollection {
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
         if (query != null) {
-            pipelineSecure.appendQuery(query);
+            appendQueryToSecureAggregationPipeline(pipelineSecure, query);
         }
         if (fields != null) {
-            pipelineSecure.appendMatch(fields);
+            appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
         }
         if (numToSkip != 0) {
-            pipelineSecure.appendSkip(numToSkip);
+            appendSkipToSecureAggregationPipeline(pipelineSecure, numToSkip);
         }
         if (limit != 0) {
-            pipelineSecure.appendLimit(limit);
+            appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
         }
 
         return _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().
@@ -243,19 +243,19 @@ public class RedactedDBCollection {
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
         if (query != null) {
-            pipelineSecure.appendQuery(query);
+            appendQueryToSecureAggregationPipeline(pipelineSecure, query);
         }
         if (fields != null) {
-            pipelineSecure.appendMatch(fields);
+            appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
         }
         if (numToSkip != 0) {
-            pipelineSecure.appendSkip(numToSkip);
+            appendSkipToSecureAggregationPipeline(pipelineSecure, numToSkip);
         }
         if (limit != 0) {
-            pipelineSecure.appendLimit(limit);
+            appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
         }
         if (orderBy != null) {
-            pipelineSecure.appendSort(orderBy);
+            appendSortToSecureAggregationPipeline(pipelineSecure, orderBy);
         }
 
         return _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().
@@ -263,6 +263,8 @@ public class RedactedDBCollection {
                 outputMode(AggregationOptions.OutputMode.CURSOR).
                 build(), readPref);
     }
+
+
 
     public Cursor find(DBObject query, DBObject fields, int limit,
                        ReadPreference readPref, DBObject orderBy) {
@@ -274,16 +276,16 @@ public class RedactedDBCollection {
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
         if (query != null) {
-            pipelineSecure.appendQuery(query);
+            appendQueryToSecureAggregationPipeline(pipelineSecure, query);
         }
         if (fields != null) {
-            pipelineSecure.appendMatch(fields);
+            appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
         }
         if (limit != 0) {
-            pipelineSecure.appendLimit(limit);
+            appendLimitToSecureAggregationPipeline(pipelineSecure, limit);
         }
         if (orderBy != null) {
-            pipelineSecure.appendSort(orderBy);
+            appendSortToSecureAggregationPipeline(pipelineSecure, orderBy);
         }
 
         return _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().
@@ -338,10 +340,10 @@ public class RedactedDBCollection {
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
         if (query != null) {
-            pipelineSecure.appendQuery(query);
+            appendQueryToSecureAggregationPipeline(pipelineSecure, query);
         }
         if (fields != null) {
-            pipelineSecure.appendMatch(fields);
+            appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
         }
 
         return _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().outputMode(AggregationOptions.OutputMode.CURSOR).build(), getReadPreference());
@@ -461,13 +463,13 @@ public class RedactedDBCollection {
         final SecureAggregationPipeline pipelineSecure = getSecureAggregationPipelineForUser();
 
         if (query != null) {
-            pipelineSecure.appendQuery(query);
+            appendQueryToSecureAggregationPipeline(pipelineSecure, query);
         }
         if (fields != null) {
-            pipelineSecure.appendMatch(fields);
+            appendMatchToSecureAggregationPipeline(pipelineSecure, fields);
         }
         if (orderBy != null) {
-            pipelineSecure.appendSort(orderBy);
+            appendSortToSecureAggregationPipeline(pipelineSecure, orderBy);
         }
 
         Cursor i = _wrapped.aggregate(pipelineSecure, AggregationOptions.builder().
@@ -580,7 +582,7 @@ public class RedactedDBCollection {
     /**
      * get the Secure Aggregation Pipeline for the user.
      *
-     * @return new pipeline {@link com.mongodb.flac.SecureAggregationPipeline} with SecurityRedact phase on the front.
+     * @return new pipeline {@link java.util.ArrayList} with SecurityRedact phase on the front.
      */
     protected SecureAggregationPipeline getSecureAggregationPipelineForUser() {
         String visibilityAttributesForUser = this.userSecurityAttributes.encodeFlacSecurityAttributes();
@@ -588,11 +590,60 @@ public class RedactedDBCollection {
     }
 
     protected static SecureAggregationPipeline getSecureAggregationPipelineForUserWorker(String visibilityAttributesForUser) {
-        final SecureAggregationPipeline redactPipeline = new SecureAggregationPipeline(visibilityAttributesForUser);
-
+        SecureAggregationPipeline redactPipeline = new SecureAggregationPipeline();
+        redactPipeline = prependSecurityRedactToPipelineWorker(redactPipeline, visibilityAttributesForUser);
         return redactPipeline;
     }
 
+    /**
+     * prepend the SecurityRedact Phrase To Pipeline and return a new redactPipeline and also
+     *
+     * @param redactPipeline              pipeline that we need to modify to prepend the $redact phase onto
+     * @param visibilityAttributesForUser visibility Attributes For User suitable for FLAC $redact operation
+     * @return a new  List<DBObject> that has a $redact operation on the front
+     */
+    private static SecureAggregationPipeline prependSecurityRedactToPipelineWorker(final ArrayList<DBObject> redactPipeline, final String visibilityAttributesForUser) {
+        final SecureAggregationPipeline redactPipelineNew = new SecureAggregationPipeline();
+        final DBObject redactCommandForPipeline = getRedactCommand(visibilityAttributesForUser);
+
+        redactPipelineNew.add(redactCommandForPipeline);       // make sure that the $redact is the first thing in the aggregate pipeline
+        redactPipelineNew.addAll(redactPipeline);
+        return redactPipelineNew;
+    }
+
+    /**
+     * build the "$redact" mongodb command based on current FLAC user visibilityAttributesForUser setting
+     */
+    private static DBObject getRedactCommand(String visibilityAttributesForUser) {
+        if (visibilityAttributesForUser == null || visibilityAttributesForUser.trim().length() == 0) {
+            visibilityAttributesForUser = "[ ]";
+        }
+        String userSecurityExpression = String.format(com.mongodb.flac.RedactedDBCollectionConstants.getSecurityExpression(), visibilityAttributesForUser);
+        logger.debug("**************** find/aggregate() userSecurityExpression: " + userSecurityExpression);
+        DBObject redactCommand = (DBObject) JSON.parse(userSecurityExpression);
+        return new BasicDBObject("$redact", redactCommand);
+    }
+
+
+    private void appendLimitToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, int limit) {
+
+    }
+
+    private void appendSkipToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, int numToSkip) {
+
+    }
+
+    private void appendMatchToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject fields) {
+
+    }
+
+    private void appendQueryToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject query) {
+
+    }
+
+    private void appendSortToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject orderBy) {
+
+    }
 
     /**
      * get the provided or default ReadPreference (currently ReadPreference.primary() ).
@@ -610,113 +661,6 @@ public class RedactedDBCollection {
      */
     public void setReadPreference(ReadPreference readPreference) {
         this.readPreference = readPreference;
-    }
-
-    /////////////////////
-    /////  The following methods are convenience methods to help use RedactedDBCollection  as closely to a
-    /////  DBCollection as possible, and pass thru operations to the internal _wrapped  DBCollection
-    /////////////////////
-
-    /**
-     * Insert a document into a collection. If the collection does not exists on the server, then it will be created. If the new document
-     * does not contain an '_id' field, it will be added.
-     *
-     * @param o       {@code DBObject} to be inserted
-     * @param concern {@code WriteConcern} to be used during operation
-     * @return the result of the operation
-     * @throws MongoException if the operation fails
-     * @dochub insert Insert
-     */
-    public WriteResult insert(DBObject o, WriteConcern concern) {
-        return _wrapped.insert(o, concern);
-    }
-
-    /**
-     * Insert documents into a collection. If the collection does not exists on the server, then it will be created. If the new document
-     * does not contain an '_id' field, it will be added.
-     *
-     * @param list    a list of {@code DBObject}'s to be inserted
-     * @param concern {@code WriteConcern} to be used during operation
-     * @param encoder {@code DBEncoder} to use to serialise the documents
-     * @return the result of the operation
-     * @throws MongoException if the operation fails
-     * @mongodb.driver.manual tutorial/insert-documents/ Insert
-     */
-    public WriteResult insert(List<DBObject> list, WriteConcern concern, DBEncoder encoder) {
-        return _wrapped.insert(list, concern, encoder);
-    }
-
-
-    /**
-     * Remove documents from a collection.
-     *
-     * @param criteria the deletion criteria using query operators. Omit the query parameter or pass an empty document to delete all
-     *                 documents in the collection.
-     * @param concern  {@code WriteConcern} to be used during operation
-     * @return the result of the operation
-     * @throws MongoException
-     * @mongodb.driver.manual tutorial/remove-documents/ Remove
-     */
-    public WriteResult remove(DBObject criteria, WriteConcern concern) {
-        return _wrapped.remove(criteria, concern);
-    }
-
-    /**
-     * Remove documents from a collection.
-     *
-     * @param criteria the deletion criteria using query operators. Omit the query parameter or pass an empty document to delete all
-     *                 documents in the collection.
-     * @param concern  {@code WriteConcern} to be used during operation
-     * @param encoder  {@code DBEncoder} to be used
-     * @return the result of the operation
-     * @throws MongoException
-     * @mongodb.driver.manual tutorial/remove-documents/ Remove
-     */
-    public WriteResult remove(DBObject criteria, WriteConcern concern, DBEncoder encoder) {
-        return _wrapped.remove(criteria, concern, encoder);
-    }
-
-    /**
-     * Remove documents from a collection. Calls {@link DBCollection#remove(com.mongodb.DBObject, com.mongodb.WriteConcern)} with the
-     * default WriteConcern
-     *
-     * @param criteria the deletion criteria using query operators. Omit the query parameter or pass an empty document to delete all documents in
-     *                 the collection.
-     * @return the result of the operation
-     * @throws MongoException
-     * @mongodb.driver.manual tutorial/remove-documents/ Remove
-     */
-    public WriteResult remove(DBObject criteria) {
-        return _wrapped.remove(criteria);
-    }
-
-    /**
-     * Modify an existing document or documents in collection. By default the method updates a single document. The query parameter employs
-     * the same query selectors, as used in {@link DBCollection#find(DBObject)}.
-     *
-     * @param query   the selection criteria for the update
-     * @param o       the modifications to apply
-     * @param upsert  when true, inserts a document if no document matches the update query criteria
-     * @param multi   when true, updates all documents in the collection that match the update query criteria, otherwise only updates one
-     * @param concern {@code WriteConcern} to be used during operation
-     * @param encoder the DBEncoder to use
-     * @return the result of the operation
-     * @throws MongoException
-     * @mongodb.driver.manual tutorial/modify-documents/ Modify
-     */
-    public WriteResult update(DBObject query, DBObject o, boolean upsert, boolean multi, WriteConcern concern,
-                              DBEncoder encoder) {
-        return _wrapped.update(query, o, upsert, multi, concern, encoder);
-    }
-
-
-    public void drop() {
-        _wrapped.drop();
-    }
-
-
-    public void createIndex(final DBObject keys, final DBObject options, DBEncoder encoder) {
-        _wrapped.createIndex(keys, options, encoder);
     }
 
 
@@ -738,7 +682,7 @@ public class RedactedDBCollection {
     }
 
 
-    private static final Logger TRACE_LOGGER = Logger.getLogger("com.mongodb.TRACE");
+    private static final Logger TRACE_LOGGER = Logger.getLogger("com.mongodb.flac.TRACE");
     private static final Level TRACE_LEVEL = Boolean.getBoolean("DB.TRACE") ? Level.INFO : Level.FINEST;
 
     private boolean willTrace() {
@@ -753,5 +697,20 @@ public class RedactedDBCollection {
         return TRACE_LOGGER;
     }
 
+
+    /**
+     * Verify that an object referenced passed as a parameter is not null and return that object also.
+     *
+     * @param reference an object reference to verify
+     * @param errorMessage the exception message to use if the null check fails
+     * @return the non-null same object,  that was validated
+     * @throws NullPointerException if {@code reference} is null
+     */
+    public static <T> T checkNotNull(T reference, String errorMessage) {
+        if (reference == null) {
+            throw new NullPointerException(String.valueOf(errorMessage));
+        }
+        return reference;
+    }
 
 }

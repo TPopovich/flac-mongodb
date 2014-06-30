@@ -305,38 +305,7 @@ public class RedactedDBCollectionTest extends TestCase {
 
     }
 
-    @Test
-    public void testInsert() throws Exception {
-        DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
 
-        int c1 = (int) getDbCollectionUsedForTesting().count();
-
-        final UserSecurityAttributesMap userSecurityAttributes = new UserSecurityAttributesMap();
-        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
-        final BasicDBObject o = new BasicDBObject();
-        o.put("firstName", "Frank");
-        final WriteResult writeResult = redactedDBCollection.insert(o, WriteConcern.NORMAL);
-
-        assertEquals(0, writeResult.getN());            // write should succeed, but modify no other doc
-        assertEquals(c1 + 1, getDbCollectionUsedForTesting().count());
-    }
-
-    @Test
-    public void testRemove() throws Exception {
-        DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
-
-        int c1 = (int) getDbCollectionUsedForTesting().count();
-
-        final UserSecurityAttributesMap userSecurityAttributes = new UserSecurityAttributesMap();
-        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
-
-        final BasicDBObject search = new BasicDBObject();
-        search.put("firstName", "Sheldon");
-        final WriteResult writeResult = redactedDBCollection.remove(search, WriteConcern.NORMAL);
-
-        assertEquals(1, writeResult.getN());            // remove should succeed, and modify 1 doc
-        assertEquals( c1-1,  getDbCollectionUsedForTesting().count() );
-    }
 
 
 
