@@ -78,6 +78,8 @@ public class UserSecurityAttributesMap extends HashMap<String, Object> {
     /**
      * Convert the list of security attributes into a FLAC encoded string in canonical format.
      *
+     * Specifically convert a java list of simple strings like: "c:TS"  into an appropriate canonical CapcoVisibilityString.
+
      * <p> The specific list of security attributes is system dependend, below we will describe
      *     and Capco like Visibility Strings to make a concrete example and also point out that
      *     you need to expand the setting if
@@ -87,7 +89,6 @@ public class UserSecurityAttributesMap extends HashMap<String, Object> {
      *
      * </p>
      *
-     * java List of simple strings like: "c:TS"  into an appropriate CapcoVisibilityString.
      *
      *
      * </tt>
@@ -118,7 +119,8 @@ public class UserSecurityAttributesMap extends HashMap<String, Object> {
      * <p> NOTES: we fully support generating lower level of TS S C and U  , for all others you need to expand yourself.</p>
      *
      * @param
-     * @return    user Flac Security Strings defined by the map
+     * @return    canonical user Flac Security Strings defined by the map that might look like e.g.
+     * [ { c:\"TS\" }, { c:\"S\" }, { c:\"U\" }, { c:\"C\" }, { sci:\"TK\" }, { sci:\"SI\" }, { sci:\"G\" }, { sci:\"HCS\" } ]
      */
     public String encodeFlacSecurityAttributes() {
 
