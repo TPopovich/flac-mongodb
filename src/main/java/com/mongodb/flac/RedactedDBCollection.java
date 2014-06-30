@@ -626,23 +626,58 @@ public class RedactedDBCollection {
 
 
     private void appendLimitToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, int limit) {
+        if (dbObjectHasData(limit)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$limit", limit);
 
     }
 
     private void appendSkipToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, int numToSkip) {
+        if (dbObjectHasData(numToSkip)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$skip", numToSkip);
 
     }
 
     private void appendMatchToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject fields) {
+        if (dbObjectHasData(fields)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$project", fields);
 
     }
 
     private void appendQueryToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject query) {
+        if (dbObjectHasData(query)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$match", query);
 
     }
 
     private void appendSortToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, DBObject orderBy) {
+        if (dbObjectHasData(orderBy)) appendClauseToSecureAggregationPipeline(pipelineSecure, "$sort", orderBy);
 
+    }
+
+    private void appendClauseToSecureAggregationPipeline(SecureAggregationPipeline pipelineSecure, final String clauseKey, Object criteria) {
+
+        if (criteria != null) {
+            DBObject match = new BasicDBObject(clauseKey, criteria);
+            pipelineSecure.add(match);
+        }
+    }
+
+    private boolean dbObjectHasData(DBObject dbObject) {
+        if (dbObject != null) {
+            if (dbObject instanceof BasicDBObject) {
+
+                if (((BasicDBObject) dbObject).size() > 0) {
+                    return true;
+                }
+
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean dbObjectHasData(Object object) {
+        if (object != null) {
+            return true;
+        }
+        return false;
     }
 
     /**
