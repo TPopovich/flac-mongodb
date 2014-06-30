@@ -129,7 +129,8 @@ public class RedactedDBCollectionTest extends TestCase {
         //
         // we also just use .put()  rather than the  setClearance() etc higher level methods to test
         // that they work, another test will stress .setClearance() like methods
-        final UserSecurityAttributesMapCapco userSecurityAttributes = new UserSecurityAttributesMapCapco("c" , "TS");
+        final UserSecurityAttributesMapCapco userSecurityAttributes = new UserSecurityAttributesMapCapco();
+        userSecurityAttributes.setClearance( "TS" );
         userSecurityAttributes.put("sci", "TK");
         // same as with:
         RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
@@ -183,7 +184,8 @@ public class RedactedDBCollectionTest extends TestCase {
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         // below we use the UserSecurityAttributesMapCapco that knows how to do our application logic of
         // c:TS also maps to c:S,  c:C, and  c:U
-        final UserSecurityAttributesMapCapco userSecurityAttributes = new UserSecurityAttributesMapCapco("c" , "TS");
+        final UserSecurityAttributesMapCapco userSecurityAttributes = new UserSecurityAttributesMapCapco();
+        userSecurityAttributes.setClearance( "TS" );
         RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
         final Cursor dbObjects = redactedDBCollection.find(query, keys);
         DBObject orderBy = new BasicDBObject("_id", 1) ;

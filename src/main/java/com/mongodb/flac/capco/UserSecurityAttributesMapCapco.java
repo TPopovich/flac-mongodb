@@ -18,13 +18,7 @@ import java.util.*;
  *
  */
 public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurityAttributesMap {
-    public UserSecurityAttributesMapCapco(int i, float v) {
-        super(i, v);
-    }
 
-    public UserSecurityAttributesMapCapco(int i) {
-        super(i);
-    }
 
     public UserSecurityAttributesMapCapco() {
     }
@@ -33,23 +27,6 @@ public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurit
         super(map);
     }
 
-
-    /**
-     * An easy inline way to create UserSecurityAttributes Mappings:  e.g.
-     * <p><tt>
-     *      new UserSecurityAttributesMapCapco(
-     *           "c", "TS",
-     *           "sci", Arrays.asList( "TK", "SI", "G", "HCS"),
-     *           "relto", Arrays.asList("US"));
-     * </tt></p>
-     *
-     * @param key1               first key of some user attribute, e.g. "c", sort for clearance
-     * @param value1             first value of some user attribute, e.g. "TS"
-     * @param keyValuePairs      vararg style key/value pairs that you can specify - see above sample code
-     */
-    public UserSecurityAttributesMapCapco(String key1, Object value1, Object... keyValuePairs) {
-        super(key1, value1, keyValuePairs);
-    }
 
 
     public String getClearance() {
@@ -115,11 +92,13 @@ public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurit
     }
 
     /**
-     * encode Flac Security attribute as needed.  By default we simply use the attribute as is, if you need to
+     * CAPCO specific encode function for Flac Security attribute. THIS NEEDS TO FULLY EXPAND ANY IMPLIED ATTRIBUTES,
+     * as by default we simply use the attribute as is, if you need to  EXPAND you need to override this method.
      * @param userAttrValue    an encoded value like "c:TS"
      * @return List of expanded encoded Flac Security attributes, e.g. for a DOD system you might need to expand
      *         c:TS into the list {  c:TS , c:S, c:C, c:U } etc
      */
+    @Override
     protected List<String> expandVisibilityString(final String userAttrValue) {
         return CapcoVisibilityUtil.recusivelyExpandCapcoVisibility(userAttrValue);
 

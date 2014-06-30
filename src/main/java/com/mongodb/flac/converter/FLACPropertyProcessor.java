@@ -21,7 +21,7 @@ import java.util.Map;
  * here we imagine one named UserManagementClass:
  *  <pre>
  *             final UserManagementClass cValue = new UserManagementClass("c_sl_value", Arrays.asList("TK"), Arrays.asList("US"));
- *             //        the key thing is the 2nd and 3rd args give the Citizenship and  Sci values
+ *             //        the key thing is the 2nd and 3rd args give the Citizenship and  Sci values of a user in the legacy app.
  *
  *             // The following statement will incorporate those values into the   UserSecurityAttributesMapCapco
  *             // class:
@@ -31,7 +31,7 @@ import java.util.Map;
  *             Assert.assertEquals(Arrays.asList("US"), userSecurityAttributesMap.getCitizenship() );
  *             Assert.assertEquals(Arrays.asList("TK"), userSecurityAttributesMap.getSci() );
  *
- *
+ *             // since UserSecurityAttributesMapCapco is setup properly its ready for use with com.mongodb.flac.RedactedDBCollection
  *  </pre>
  *
  *  See test code in com.mongodb.flac.converter.FLACPropertyProcessorTest#testUsingPropProcToInject()
