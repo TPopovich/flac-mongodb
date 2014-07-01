@@ -46,10 +46,15 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
         this.put("sci", sci) ;
     }
 
-    public List<String> getCitizenship() { return (List<String>) this.get("citizenship");}
+    public List<String> getCitizenship() { return (List<String>) this.get("relto");}
 
+    /** set the citizenship which in CAPCO will relate to the relto capabilities.
+     *
+     * <p> NOTE: this is not a complete implementation and that a library like "JBlocks" would be used for the full expansion.</p>
+     * @param citizenship
+     */
     public void setCitizenship(List<String> citizenship) {
-        this.put("citizenship", citizenship) ;
+        this.put("relto", citizenship) ;     // TODO:  this is not a complete implementation and that a library like "JBlocks" would be used for the full expansion.
     }
 
     /**
