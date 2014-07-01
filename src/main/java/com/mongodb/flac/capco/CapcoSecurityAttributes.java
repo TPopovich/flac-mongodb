@@ -6,9 +6,9 @@ import com.mongodb.flac.SecurityAttributes;
 import java.util.*;
 
 /**
- * UserSecurityAttributesMap for Capco,  describes the User Security attributes for the user.
+ * SecurityAttributes for Capco,  describes the User Security attributes for the user.
  *
- * <p> This is a UserSecurityAttributesMap class that implements CAPCO behavior such
+ * <p> This is a SecurityAttributes class that implements CAPCO behavior such
  * as clearance TS also means a person with TS also inherits clearances (S, C, and U). </p>
  *
  * <p> It also has getter/setters for the CAPCO attributes of: clearances, sci, and citizenship.</p>

@@ -4,7 +4,7 @@ package com.mongodb.flac;
 import java.util.*;
 
 /**
- * UserSecurityAttributesMap describes the User Security attributes for the user.
+ * SecurityAttributes describes the User Security attributes for the user.
  *
  * @see com.mongodb.flac.capco.CapcoSecurityAttributes   for a CAPCO specific subclass
  */
@@ -28,16 +28,14 @@ public class SecurityAttributes extends HashMap<String, Object> {
      * convert a java list of simple strings like: key:value, e.g. "c:TS" (from our long running sample
      * application we have been discussing in the documentation) into an appropriate canonical VisibilityString.</p>m
      *
-     * <p> The specific list of security attributes is system dependend, below we will describe
+     * <p> The specific list of security attributes is system dependent, below we will describe
      *     and Capco like Visibility Strings to make a concrete example and also point out that
      *     you need to expand the setting if
      *     a setting , below see, c:TS, has domain meaning to be a superset of
      *     other lower level security settings. E.g. in CAPCO TS also implies
      *     that you have S C U.
      *
-     *     <br/>  To make it easy to do this conversion we have a hook to install any custom logic, see
-     *     method: com.mongodb.flac.UserSecurityAttributesMap#expandVisibilityStringPodMarker(java.lang.String)
-     *
+
      * </p>
      *
      *

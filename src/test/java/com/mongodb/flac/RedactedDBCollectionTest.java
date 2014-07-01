@@ -124,7 +124,7 @@ public class RedactedDBCollectionTest extends TestCase {
         final BasicDBObject keys = new BasicDBObject();
 
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
-        // below we use the UserSecurityAttributesMapCapco that knows how to do our application logic of
+        // below we use the CapcoSecurityAttributes that knows how to do our application logic of
         // c:TS also maps to c:S,  c:C, and  c:U
         //
         // we also just use .put()  rather than the  setClearance() etc higher level methods to test
@@ -154,7 +154,7 @@ public class RedactedDBCollectionTest extends TestCase {
         final BasicDBObject keys = new BasicDBObject();
 
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
-        // below we use the UserSecurityAttributesMapCapco that knows how to do our application logic of
+        // below we use the CapcoSecurityAttributes that knows how to do our application logic of
         // c:TS also maps to c:S,  c:C, and  c:U
         final CapcoSecurityAttributes userSecurityAttributes = new CapcoSecurityAttributes();
         // same as with:
@@ -182,7 +182,7 @@ public class RedactedDBCollectionTest extends TestCase {
         final BasicDBObject keys = new BasicDBObject();
 
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
-        // below we use the UserSecurityAttributesMapCapco that knows how to do our application logic of
+        // below we use the CapcoSecurityAttributes that knows how to do our application logic of
         // c:TS also maps to c:S,  c:C, and  c:U
         final CapcoSecurityAttributes userSecurityAttributes = new CapcoSecurityAttributes();
         userSecurityAttributes.setClearance( "TS" );
@@ -455,7 +455,7 @@ public class RedactedDBCollectionTest extends TestCase {
 
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();           // this is a normal standard Mongodb collection
         ////
-        // below we use the UserSecurityAttributesMapCapco that knows how to do our application logic of
+        // below we use the CapcoSecurityAttributes that knows how to do our application logic of
         // c:TS also maps to c:S,  c:C, and  c:U
         ////
         // here we have a user with clearance of "TS"  and they also have sci: TK
@@ -464,7 +464,7 @@ public class RedactedDBCollectionTest extends TestCase {
         userSecurityAttributes.setClearance("U");
         userSecurityAttributes.setSci(Arrays.asList("TK"));
 
-        // Now we get a new secure redactedDBCollection, that will honor the above UserSecurityAttributesMap
+        // Now we get a new secure redactedDBCollection, that will honor the above CapcoSecurityAttributes
         // and only provide fields that this specific user is allowed to access:
         RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
         Cursor dbObjectsCursor = redactedDBCollection.find(query, keys);
