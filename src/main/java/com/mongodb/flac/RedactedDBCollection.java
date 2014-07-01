@@ -36,8 +36,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  *  need a few variations, you can safely comment out or delete the ones your do not need.
  *
  * <p> Q: where / how does aggregation know the users ability to see certain fields?
- *     A: we have a class com.mongodb.flac.UserSecurityAttributesMap  that stores them. (Also see
- *     the CAPCO specific subclass com.mongodb.flac.capco.UserSecurityAttributesMapCapco
+ *     A: we have a class com.mongodb.flac.SecurityAttributes  that stores them. (Also see
+ *     the CAPCO specific subclass com.mongodb.flac.capco.CapcoSecurityAttributes
  * </p>
  *
  * <p/>
@@ -48,7 +48,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  *
  *     DBCollection dbCollectionSrc =  ... ;
  *
- *     <span style="color:green">UserSecurityAttributesMapCapco</span> userSecurityAttributes = new <span style="color:green">UserSecurityAttributesMapCapco()</span>;
+ *     <span style="color:green">CapcoSecurityAttributes</span> userSecurityAttributes = new <span style="color:green">CapcoSecurityAttributes()</span>;
  *
  *     userSecurityAttributes.setClearance("U");     // set the users permissions
  *

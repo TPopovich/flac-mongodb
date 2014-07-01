@@ -139,8 +139,8 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
      */
     public String encodeAttributes() {
 
-        // the super class has a plugin call to expandVisibilityStringPodMarker()  so we do not need any changes to the
-        // superclass's method.  All our changes are i
+        // the super class encodeAttributes() will suffice for the CAPCO specific logic.  All the CAPCO specifics are in how
+        // the values expands, e.g. TS =>  expands to TS S C U
         return super.encodeAttributes();
 
     }

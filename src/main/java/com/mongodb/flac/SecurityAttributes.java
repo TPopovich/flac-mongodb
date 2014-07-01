@@ -19,8 +19,8 @@ public class SecurityAttributes extends HashMap<String, Object> {
 
 
     /**
-     * Convert the list of security attributes into a FLAC encoded string in canonical format.
-     * Goal is a java List of simple strings like: "c:TS"  formed from the Map of key/value pairs
+     * Convert the list of security attributes stored in the map into a FLAC encoded string in canonical format.
+     * The goal is a java List of simple strings like: "c:TS"  formed from the Map of key/value pairs
      * into encoded string in canonical format that is
      * appropriate for a Capco VisibilityString used in the $redact stage of aggregate.
      *
@@ -93,7 +93,7 @@ public class SecurityAttributes extends HashMap<String, Object> {
 
 
 
-    public static String spyspy(String s) {
+    public static String spyspy(String s) {     //podpod
         System.err.println("spyspy found: " + s);
         return s;
     }
