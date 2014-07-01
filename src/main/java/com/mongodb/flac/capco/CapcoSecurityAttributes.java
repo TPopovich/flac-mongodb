@@ -142,18 +142,7 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
 
     }
 
-    /**
-     * CAPCO specific encode function for Flac Security attribute. THIS NEEDS TO FULLY EXPAND ANY IMPLIED ATTRIBUTES,
-     * as by default we simply use the attribute as is, if you need to  EXPAND you need to override this method.
-     * @param userAttrValue    an encoded value like "c:TS"
-     * @return List of expanded encoded Flac Security attributes, e.g. for a DOD system you might need to expand
-     *         c:TS into the list {  c:TS , c:S, c:C, c:U } etc
-     */
-    @Override
-    protected List<String> expandVisibilityStringPodMarker(final String userAttrValue) {
-        return CapcoVisibilityUtil.expandClassification(userAttrValue);
 
-    }
 
 }
 

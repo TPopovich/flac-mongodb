@@ -65,8 +65,7 @@ public class SecurityAttributes extends HashMap<String, Object> {
                 if (val != null) {
                     val = val.trim();
                     final String formattedKeyValue = String.format("%s:%s", key, val);  // generates a term like c:TS
-                    final List<String> userVisibilityStrings = expandVisibilityStringPodMarker(formattedKeyValue);
-                    secAttrSetFormattedKeyValue.addAll(userVisibilityStrings);
+                    secAttrSetFormattedKeyValue.add(formattedKeyValue);
                 }
             }
         }
@@ -89,21 +88,7 @@ public class SecurityAttributes extends HashMap<String, Object> {
 
     }
 
-    /**
-     * THIS IS A EXTENSION POINT TO HANDLE CUSTOM SECURITY HIERARCHIES.  The default is to just return the
-     * argument without any interpretation.
-     *
-     * <p/>
-     * This will encode Flac Security attribute as needed. THIS NEEDS TO FULLY EXPAND ANY IMPLIED ATTRIBUTES,
-     * as by default we simply use the attribute as is, if you need to  EXPAND you need to override this method.
-     * @param userAttrValue    an encoded value like "c:TS"
-     * @return List of expanded encoded Flac Security attributes, e.g. for a DOD system you might need to expand
-     *         c:TS into the list {  c:TS , c:S, c:C, c:U } etc
-     */
-    protected List<String> expandVisibilityStringPodMarker(final String userAttrValue) {
-        return Arrays.asList(userAttrValue);
 
-    }
 
     public static String spyspy(String s) {
         System.err.println("spyspy found: " + s);
