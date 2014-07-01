@@ -18,42 +18,6 @@ public class SecurityAttributes extends HashMap<String, Object> {
     }
 
 
-    //    The following VARARG style constructor is commented out, but you might find it useful.
-    //    /**
-    //     * An easy inline way to create UserSecurityAttributes Mapping:  e.g.
-    //     * <p><tt>
-    //     *      new UserSecurityAttributesMap(
-    //     *           "c", "TS",
-    //     *           "sci", Arrays.asList( "TK", "SI", "G", "HCS"),
-    //     *           "relto", Arrays.asList( "US"));
-    //     * </tt></p>
-    //     *
-    //     * @param key1               first key of some user attribute, e.g. "c", sort for clearance
-    //     * @param value1             first value of some user attribute, e.g. "TS"
-    //     * @param keyValuePairs      vararg style key/value pairs that you can specify - see above sample code
-    //     */
-    //    public UserSecurityAttributesMap(String key1, Object value1, Object... keyValuePairs) {
-    //        super(createAttributeMap(key1, value1, keyValuePairs));
-    //    }
-    //
-    //    private static Map<String, Object> createAttributeMap(String key1, Object value1, Object[] keyValuePairs) {
-    //        Map<String, Object> map = new HashMap<String, Object>();
-    //
-    //        if (key1 == null) throw new IllegalArgumentException("key1 must not be null");
-    //        if (value1 != null) map.put(key1, value1);
-    //        for (int i = 0; i<keyValuePairs.length; i += 2) {
-    //            if (value1 != null) {
-    //                final String valuePairKey = (String) keyValuePairs[i];
-    //                if (valuePairKey == null) throw new IllegalArgumentException("key for any value must not be null");
-    //                final Object valuePairValue = keyValuePairs[i + 1];
-    //                if (valuePairValue != null) map.put(valuePairKey, valuePairValue);
-    //            }
-    //
-    //        }
-    //        return map;
-    //    }
-
-
     /**
      * Convert the list of security attributes into a FLAC encoded string in canonical format.
      *
@@ -82,7 +46,7 @@ public class SecurityAttributes extends HashMap<String, Object> {
      * @return    canonical user Flac Security Strings defined by the map that might look like e.g.
      * [ { c:\"TS\" }, { c:\"S\" }, { c:\"U\" }, { c:\"C\" }, { sci:\"TK\" }, { sci:\"SI\" }, { sci:\"G\" }, { sci:\"HCS\" } ]
      */
-    public String encodeFlacSecurityAttributes() {
+    public String encodeAttributes() {
 
         StringBuilder stringBuilder = new StringBuilder();
 

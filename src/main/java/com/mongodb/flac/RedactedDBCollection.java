@@ -503,7 +503,7 @@ public class RedactedDBCollection {
      * @return new pipeline {@link java.util.ArrayList} with SecurityRedact phase on the front.
      */
     protected SecureAggregationPipeline getSecureAggregationPipelineForUser() {
-        String visibilityAttributesForUser = this.userSecurityAttributes.encodeFlacSecurityAttributes();
+        String visibilityAttributesForUser = this.userSecurityAttributes.encodeAttributes();
         return getSecureAggregationPipelineForUserWorker(visibilityAttributesForUser);
     }
 

@@ -91,11 +91,11 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
      * @param
      * @return    user Flac Security Strings defined by the map
      */
-    public String encodeFlacSecurityAttributes() {
+    public String encodeAttributes() {
 
         // the super class has a plugin call to expandVisibilityString()  so we do not need any changes to the
         // superclass's method.  All our changes are i
-        return super.encodeFlacSecurityAttributes();
+        return super.encodeAttributes();
 
     }
 
