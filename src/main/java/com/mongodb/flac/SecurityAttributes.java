@@ -33,7 +33,7 @@ public class SecurityAttributes extends HashMap<String, Object> {
      *     that you have S C U.
      *
      *     <br/>  To make it easy to do this conversion we have a hook to install any custom logic, see
-     *     method: com.mongodb.flac.UserSecurityAttributesMap#expandVisibilityString(java.lang.String)
+     *     method: com.mongodb.flac.UserSecurityAttributesMap#expandVisibilityStringPodMarker(java.lang.String)
      *
      * </p>
      *
@@ -65,7 +65,7 @@ public class SecurityAttributes extends HashMap<String, Object> {
                 if (val != null) {
                     val = val.trim();
                     final String formattedKeyValue = String.format("%s:%s", key, val);  // generates a term like c:TS
-                    final List<String> userVisibilityStrings = expandVisibilityString(formattedKeyValue);
+                    final List<String> userVisibilityStrings = expandVisibilityStringPodMarker(formattedKeyValue);
                     secAttrSetFormattedKeyValue.addAll(userVisibilityStrings);
                 }
             }
@@ -100,7 +100,7 @@ public class SecurityAttributes extends HashMap<String, Object> {
      * @return List of expanded encoded Flac Security attributes, e.g. for a DOD system you might need to expand
      *         c:TS into the list {  c:TS , c:S, c:C, c:U } etc
      */
-    protected List<String> expandVisibilityString(final String userAttrValue) {
+    protected List<String> expandVisibilityStringPodMarker(final String userAttrValue) {
         return Arrays.asList(userAttrValue);
 
     }

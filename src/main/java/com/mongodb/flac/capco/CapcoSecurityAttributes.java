@@ -98,7 +98,7 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
      */
     public String encodeAttributes() {
 
-        // the super class has a plugin call to expandVisibilityString()  so we do not need any changes to the
+        // the super class has a plugin call to expandVisibilityStringPodMarker()  so we do not need any changes to the
         // superclass's method.  All our changes are i
         return super.encodeAttributes();
 
@@ -112,7 +112,7 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
      *         c:TS into the list {  c:TS , c:S, c:C, c:U } etc
      */
     @Override
-    protected List<String> expandVisibilityString(final String userAttrValue) {
+    protected List<String> expandVisibilityStringPodMarker(final String userAttrValue) {
         return CapcoVisibilityUtil.expandClassification(userAttrValue);
 
     }
