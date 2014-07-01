@@ -20,6 +20,9 @@ public class SecurityAttributes extends HashMap<String, Object> {
 
     /**
      * Convert the list of security attributes into a FLAC encoded string in canonical format.
+     * Goal is a java List of simple strings like: "c:TS"  formed from the Map of key/value pairs
+     * into encoded string in canonical format that is
+     * appropriate for a Capco VisibilityString used in the $redact stage of aggregate.
      *
      * <p>Specifically look at the key/value pairs stored in this Map.  And then
      * convert a java list of simple strings like: key:value, e.g. "c:TS" (from our long running sample

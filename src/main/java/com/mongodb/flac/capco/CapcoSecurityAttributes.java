@@ -86,19 +86,22 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
 
     public List<String> getCitizenship() { return (List<String>) this.get("relto");}
 
-    /** set the citizenship which in CAPCO will relate to the relto capabilities.
+    /**
+     * set the citizenship of the user, in relto capabilities. Note in CAPCO, e.g. US citizenship
+     * maps to a bunch of different relto values including USA and NOFORN.  This method should
+     * expand to appropriate values, similar to the setClearance above, as needed in your system.
      *
-     * <p> NOTE: this is not a complete implementation and that a library like "JBlocks" would be used for the full expansion.</p>
+     * <p> <b>NOTE: this is not a complete implementation and does not expand citizenship values. </b>
      * @param citizenship
      */
     public void setCitizenship(List<String> citizenship) {
-        this.put("relto", citizenship) ;     // TODO:  this is not a complete implementation and that a library like "JBlocks" would be used for the full expansion.
+        this.put("relto", citizenship) ;     // TODO:  this is not a complete implementation ; the full expansion is not done.
     }
 
     /**
      * Convert java List of simple strings like: "c:TS"  formed from the Map of key/value pairs
      * into encoded string in canonical format,
-     * and one appropriate for a Capco VisibilityString.
+     * and one appropriate for a Capco VisibilityString used in the $redact stage of aggregate.
      *
      * <p>Specifically look at the key/value pairs stored in this Map.  And then
      * convert a java list of simple strings like: key:value, e.g. "c:TS" (from our long running sample
