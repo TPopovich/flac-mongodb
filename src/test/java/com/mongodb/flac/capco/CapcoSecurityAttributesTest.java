@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-public class UserSecurityAttributesMapCapcoTest extends TestCase {
+public class CapcoSecurityAttributesTest extends TestCase {
     @Test
     public void testExpandVisibilityString() throws Exception {
 

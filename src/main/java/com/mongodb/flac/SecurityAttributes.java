@@ -85,7 +85,7 @@ public class SecurityAttributes extends HashMap<String, Object> {
         }
         stringBuilder.append(" ]");
 
-        return stringBuilder.toString();
+        return spyspy(stringBuilder.toString());
 
     }
 
@@ -103,6 +103,11 @@ public class SecurityAttributes extends HashMap<String, Object> {
     protected List<String> expandVisibilityStringPodMarker(final String userAttrValue) {
         return Arrays.asList(userAttrValue);
 
+    }
+
+    public static String spyspy(String s) {
+        System.err.println("spyspy found: " + s);
+        return s;
     }
 
 }

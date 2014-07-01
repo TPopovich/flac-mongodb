@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class UserSecurityAttributesMapTest {
+public class SecurityAttributesTest {
 
     @Test
     public void testExpandVisibilityStringNoAttrs() throws Exception {

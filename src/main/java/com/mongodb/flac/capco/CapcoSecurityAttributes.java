@@ -30,12 +30,50 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
 
 
 
-    public String getClearance() {
-        return (String) this.get("c");
+    public List<String> getClearance() {
+        return (List<String>) this.get("c");
     }
 
+    /**
+     * CAPCO specific Clearance levels have a nesting. THIS NEEDS TO FULLY EXPAND ANY IMPLIED ATTRIBUTES,
+     * as by default we simply use the attribute as is, if you need to  EXPAND you need to override this method
+     * and use your tuned CapcoSecurityAttributes class.
+     *
+     * <p> IMPLIED TS => S => C => U  is supported by this method, so if you provide a Clearance of TS we
+     *     will generate <tt>TS , S , C , U </tt>  for you similarly
+     *     if you specify S we generate <tt> S , C , U </tt>  etc
+     * </p>
+     *
+     * @param clearance    an value like "TS"     (for top secret)
+     */
     public void setClearance(String clearance) {
-        this.put("c", clearance) ;
+        this.put("c", expandClearance(clearance) );
+    }
+
+    private List<String> expandClearance(String clearance) {
+
+        final HashSet<String> capco = new LinkedHashSet<String>();
+
+        if ("TS".equalsIgnoreCase(clearance)) {
+            capco.add("TS");
+            capco.add("S");
+            capco.add("C");
+            capco.add("U");
+        } else if ("S".equalsIgnoreCase(clearance)) {
+            capco.add("S");
+            capco.add("C");
+            capco.add("U");
+        } else if ("C".equalsIgnoreCase(clearance)) {
+            capco.add("C");
+            capco.add("U");
+        } else if ("U".equalsIgnoreCase(clearance)) {
+            capco.add("U");
+        } else {
+            capco.add(clearance);
+        }
+
+
+        return new ArrayList<String>( capco );
     }
 
     public List<String> getSci() {
