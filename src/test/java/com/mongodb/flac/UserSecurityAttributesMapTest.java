@@ -1,6 +1,5 @@
 package com.mongodb.flac;
 
-import com.mongodb.flac.UserSecurityAttributesMap;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -8,21 +7,19 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 public class UserSecurityAttributesMapTest {
 
     @Test
     public void testExpandVisibilityStringNoAttrs() throws Exception {
 
-        UserSecurityAttributesMap userSecurityAttributesMap = new UserSecurityAttributesMap();
+        SecurityAttributes userSecurityAttributesMap = new SecurityAttributes();
         String attributes = userSecurityAttributesMap.encodeFlacSecurityAttributes();
         Assert.assertEquals("[  ]", attributes);
     }
 
     @Test
     public void testExpandVisibilityStringStringArgOnly() throws Exception {
-        UserSecurityAttributesMap userSecurityAttributesMap = new UserSecurityAttributesMap();
+        SecurityAttributes userSecurityAttributesMap = new SecurityAttributes();
 
         // try 1 string "TK"   , not list version   => should generate: [ { sci:"TK" } ]
         userSecurityAttributesMap.put( "sci", Arrays.asList("TK"));
@@ -32,7 +29,7 @@ public class UserSecurityAttributesMapTest {
     @Test
     public void testExpandVisibilityString() throws Exception {
 
-        UserSecurityAttributesMap userSecurityAttributesMap = new UserSecurityAttributesMap();
+        SecurityAttributes userSecurityAttributesMap = new SecurityAttributes();
 
         // (1) first:  try 1 string "TK"       => should generate: [ { sci:"TK" } ]
         userSecurityAttributesMap.put("sci", Arrays.asList("TK"));

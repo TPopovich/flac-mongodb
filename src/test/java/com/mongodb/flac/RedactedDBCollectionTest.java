@@ -1,7 +1,7 @@
 package com.mongodb.flac;
 
 import com.mongodb.*;
-import com.mongodb.flac.capco.UserSecurityAttributesMapCapco;
+import com.mongodb.flac.capco.CapcoSecurityAttributes;
 import com.mongodb.util.JSON;
 import com.mongodb.util.TestCase;
 import org.junit.Before;
@@ -51,7 +51,7 @@ public class RedactedDBCollectionTest extends TestCase {
         final BasicDBObject keys = new BasicDBObject();
 
         final DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
-        final UserSecurityAttributesMap userSecurityAttributes = new UserSecurityAttributesMap();
+        final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
         final RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
         final BasicDBObject sort = new BasicDBObject("firstName", -1);
         final Cursor dbObjects = redactedDBCollection.find(query, keys, 0, 0, 0, 0, ReadPreference.primary(), sort);
@@ -77,7 +77,7 @@ public class RedactedDBCollectionTest extends TestCase {
         final BasicDBObject keys = new BasicDBObject();
 
         final DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
-        final UserSecurityAttributesMap userSecurityAttributes = new UserSecurityAttributesMap();
+        final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
         final RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
         final Cursor dbObjects = redactedDBCollection.find(query, keys);
 
@@ -102,7 +102,7 @@ public class RedactedDBCollectionTest extends TestCase {
         final BasicDBObject keys = new BasicDBObject();
 
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
-        final UserSecurityAttributesMap userSecurityAttributes = new UserSecurityAttributesMap();
+        final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
 
         RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
         final Cursor dbObjects = redactedDBCollection.find(query, keys);
@@ -129,7 +129,7 @@ public class RedactedDBCollectionTest extends TestCase {
         //
         // we also just use .put()  rather than the  setClearance() etc higher level methods to test
         // that they work, another test will stress .setClearance() like methods
-        final UserSecurityAttributesMapCapco userSecurityAttributes = new UserSecurityAttributesMapCapco();
+        final CapcoSecurityAttributes userSecurityAttributes = new CapcoSecurityAttributes();
         userSecurityAttributes.setClearance( "TS" );
         userSecurityAttributes.put("sci", "TK");
         // same as with:
@@ -156,7 +156,7 @@ public class RedactedDBCollectionTest extends TestCase {
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         // below we use the UserSecurityAttributesMapCapco that knows how to do our application logic of
         // c:TS also maps to c:S,  c:C, and  c:U
-        final UserSecurityAttributesMapCapco userSecurityAttributes = new UserSecurityAttributesMapCapco();
+        final CapcoSecurityAttributes userSecurityAttributes = new CapcoSecurityAttributes();
         // same as with:
         userSecurityAttributes.setClearance("TS");
         userSecurityAttributes.setSci(Arrays.asList("TK"));
@@ -184,7 +184,7 @@ public class RedactedDBCollectionTest extends TestCase {
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         // below we use the UserSecurityAttributesMapCapco that knows how to do our application logic of
         // c:TS also maps to c:S,  c:C, and  c:U
-        final UserSecurityAttributesMapCapco userSecurityAttributes = new UserSecurityAttributesMapCapco();
+        final CapcoSecurityAttributes userSecurityAttributes = new CapcoSecurityAttributes();
         userSecurityAttributes.setClearance( "TS" );
         RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
         final Cursor dbObjects = redactedDBCollection.find(query, keys);
@@ -207,7 +207,7 @@ public class RedactedDBCollectionTest extends TestCase {
         final BasicDBObject keys = new BasicDBObject("firstName", 1);
 
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
-        final UserSecurityAttributesMap userSecurityAttributes = new UserSecurityAttributesMap();
+        final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
         RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
         final Cursor dbObjects = redactedDBCollection.find(query, keys);
 
@@ -228,7 +228,7 @@ public class RedactedDBCollectionTest extends TestCase {
         final BasicDBObject keys = new BasicDBObject();
 
         final DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
-        final UserSecurityAttributesMap userSecurityAttributes = new UserSecurityAttributesMap();
+        final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
         final RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
         List<DBObject> pipelineForAggregate = new ArrayList<DBObject>();
         pipelineForAggregate.add(new BasicDBObject("$match",
@@ -278,7 +278,7 @@ public class RedactedDBCollectionTest extends TestCase {
         final BasicDBObject keys = new BasicDBObject();
 
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
-        final UserSecurityAttributesMap userSecurityAttributes = new UserSecurityAttributesMap();
+        final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
         RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
         final Cursor dbObjects = redactedDBCollection.find(query, keys);
 
@@ -295,7 +295,7 @@ public class RedactedDBCollectionTest extends TestCase {
         final BasicDBObject keys = new BasicDBObject();
 
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
-        final UserSecurityAttributesMap userSecurityAttributes = new UserSecurityAttributesMap();
+        final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
         RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
         final DBObject dbObject = redactedDBCollection.findOne(query, keys);
 
@@ -460,7 +460,7 @@ public class RedactedDBCollectionTest extends TestCase {
         ////
         // here we have a user with clearance of "TS"  and they also have sci: TK
         ////
-        final UserSecurityAttributesMapCapco userSecurityAttributes = new UserSecurityAttributesMapCapco();
+        final CapcoSecurityAttributes userSecurityAttributes = new CapcoSecurityAttributes();
         userSecurityAttributes.setClearance("U");
         userSecurityAttributes.setSci(Arrays.asList("TK"));
 
@@ -477,7 +477,7 @@ public class RedactedDBCollectionTest extends TestCase {
        // person with TS  should see more fields.
        ////////////////////////////
 
-        final UserSecurityAttributesMapCapco userSecurityAttributesTS = new UserSecurityAttributesMapCapco();
+        final CapcoSecurityAttributes userSecurityAttributesTS = new CapcoSecurityAttributes();
         userSecurityAttributesTS.setClearance("TS");
         userSecurityAttributesTS.setSci(Arrays.asList("TK"));
         RedactedDBCollection redactedDBCollectionTS = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);

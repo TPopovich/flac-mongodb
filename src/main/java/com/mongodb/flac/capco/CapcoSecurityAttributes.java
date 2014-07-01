@@ -1,6 +1,8 @@
 package com.mongodb.flac.capco;
 
 
+import com.mongodb.flac.SecurityAttributes;
+
 import java.util.*;
 
 /**
@@ -13,16 +15,16 @@ import java.util.*;
  *
  * <p>For more info on CAPCO see http://fas.org/sgp/othergov/intel/capco_reg.pdf </p>
  *
- * @see com.mongodb.flac.UserSecurityAttributesMap
+ * @see com.mongodb.flac.SecurityAttributes
  *
  */
-public class UserSecurityAttributesMapCapco extends com.mongodb.flac.UserSecurityAttributesMap {
+public class CapcoSecurityAttributes extends SecurityAttributes {
 
 
-    public UserSecurityAttributesMapCapco() {
+    public CapcoSecurityAttributes() {
     }
 
-    public UserSecurityAttributesMapCapco(Map<? extends String, ?> map) {
+    public CapcoSecurityAttributes(Map<? extends String, ?> map) {
         super(map);
     }
 

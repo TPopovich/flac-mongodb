@@ -6,14 +6,14 @@ import java.util.*;
 /**
  * UserSecurityAttributesMap describes the User Security attributes for the user.
  *
- * @see com.mongodb.flac.capco.UserSecurityAttributesMapCapco   for a CAPCO specific subclass
+ * @see com.mongodb.flac.capco.CapcoSecurityAttributes   for a CAPCO specific subclass
  */
-public class UserSecurityAttributesMap extends HashMap<String, Object> {
+public class SecurityAttributes extends HashMap<String, Object> {
 
-    public UserSecurityAttributesMap() {
+    public SecurityAttributes() {
     }
 
-    public UserSecurityAttributesMap(Map<? extends String, ?> map) {
+    public SecurityAttributes(Map<? extends String, ?> map) {
         super(map);
     }
 

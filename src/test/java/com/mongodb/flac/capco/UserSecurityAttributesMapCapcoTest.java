@@ -1,6 +1,5 @@
 package com.mongodb.flac.capco;
 
-import com.mongodb.flac.UserSecurityAttributesMap;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,7 +10,7 @@ public class UserSecurityAttributesMapCapcoTest extends TestCase {
     @Test
     public void testExpandVisibilityString() throws Exception {
 
-        UserSecurityAttributesMapCapco userSecurityAttributesMap = new UserSecurityAttributesMapCapco();
+        CapcoSecurityAttributes userSecurityAttributesMap = new CapcoSecurityAttributes();
 
         // (1) first:  try 1 string "TK"       => should generate: [ { sci:"TK" } ]
         userSecurityAttributesMap.setSci(Arrays.asList("TK"));

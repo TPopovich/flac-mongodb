@@ -1,7 +1,6 @@
 package com.mongodb.flac;
 
 import com.mongodb.*;
-import com.mongodb.flac.UserSecurityAttributesMap;
 import com.mongodb.util.TestCase;
 import org.bson.types.BasicBSONList;
 import org.junit.BeforeClass;
@@ -102,7 +101,7 @@ public class SafeDBCollectionTest extends TestCase {
         DBCollection persons = db.getCollection("persons");
         DBCollection wrappedDBCollection = persons;
 
-        UserSecurityAttributesMap userAttributes = new UserSecurityAttributesMap();
+        SecurityAttributes userAttributes = new SecurityAttributes();
         userAttributes.put("clearance", "TS");
         userAttributes.put("sci", Arrays.asList("TK", "SI", "G", "HCS"));
         userAttributes.put("countries", Arrays.asList("US"));

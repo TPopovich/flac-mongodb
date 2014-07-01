@@ -64,7 +64,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * </pre>
  * </p>
  * <p/>
- * <p> See the <span style="color:green">$redact processor</span> that we created in {@link com.mongodb.flac.capco.UserSecurityAttributesMapCapco} which is created for CAPCO
+ * <p> See the <span style="color:green">$redact processor</span> that we created in {@link com.mongodb.flac.capco.CapcoSecurityAttributes} which is created for CAPCO
  * ( http://fas.org/sgp/othergov/intel/capco_reg.pdf ) like protection, where we have an AND-ing of OR-s so we
  * can support use cases of i.e. clearance of TS and sci of either TK or G.
  * <p/>
@@ -75,8 +75,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * code subdirectory.
  * </p>
  *
- * @see com.mongodb.flac.capco.UserSecurityAttributesMapCapco
- * @see com.mongodb.flac.UserSecurityAttributesMap
+ * @see com.mongodb.flac.capco.CapcoSecurityAttributes
+ * @see SecurityAttributes
  */
 @SuppressWarnings("deprecation")
 public class RedactedDBCollection {
@@ -94,7 +94,7 @@ public class RedactedDBCollection {
     /**
      * The current users SecurityAttributes, which is a application specific mapping of security decls.
      */
-    private UserSecurityAttributesMap userSecurityAttributes;
+    private SecurityAttributes userSecurityAttributes;
     public static final BasicDBObject EMPTY_OBJECT = new BasicDBObject(); // i.e. "{}";
 
 
@@ -138,7 +138,7 @@ public class RedactedDBCollection {
      *                                      countries=["US"]
      *                               </tt></pre>
      */
-    public RedactedDBCollection(DBCollection wrappedDBCollection, UserSecurityAttributesMap userSecurityAttributes) {
+    public RedactedDBCollection(DBCollection wrappedDBCollection, SecurityAttributes userSecurityAttributes) {
         checkNotNull(wrappedDBCollection, "wrappedDBCollection can't be null");
         this.userSecurityAttributes = checkNotNull(userSecurityAttributes, "userSecurityAttributes can't be null");
 
