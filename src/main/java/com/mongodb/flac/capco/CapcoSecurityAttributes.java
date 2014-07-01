@@ -113,7 +113,7 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
      */
     @Override
     protected List<String> expandVisibilityString(final String userAttrValue) {
-        return CapcoVisibilityUtil.recusivelyExpandCapcoVisibility(userAttrValue);
+        return CapcoVisibilityUtil.expandClassification(userAttrValue);
 
     }
 

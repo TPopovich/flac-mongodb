@@ -64,9 +64,7 @@ import java.util.*;
  */
 public class CapcoVisibilityUtil {
 
-    public static final boolean EXPAND_CAPCO_AS_TREE_OF_VISIBILITY = true;
-
-    /** Recursively Expand Capco Visibility, as c:TS implies c:S etc
+    /** Expand Capco Visibility, as c:TS (clearance of Top Secret) implies c:S (clearance of Secret) etc
      *
      * @param userCapcoVisibilityEncodedString specifies a user security encoded value, e.g. considering a sample
      *                                         military application, one that has only high level user CAPCO e.g.
@@ -75,12 +73,12 @@ public class CapcoVisibilityUtil {
      *
      * @return  all user CAPCO entries with duplicates suppressed.
      */
-    public static List<String> recusivelyExpandCapcoVisibility(String userCapcoVisibilityEncodedString) {
+    public static List<String> expandClassification(String userCapcoVisibilityEncodedString) {
         final List<String> userCapcoVisibilityStrings = Arrays.asList(userCapcoVisibilityEncodedString);
-        return recusivelyExpandCapcoVisibility(userCapcoVisibilityStrings);
+        return expandClassification(userCapcoVisibilityStrings);
     }
 
-    /** Recursively Expand Capco Visibility, as c:TS implies c:S etc
+    /** Expand Capco Visibility, as c:TS (clearance of Top Secret) implies c:S (clearance of Secret) etc
      *
      * <p> This gives an concrete application where a user might specify a recursive model:
      *                                          a user security encoded value, e.g. considering a sample
@@ -91,36 +89,33 @@ public class CapcoVisibilityUtil {
      *        lower levels
      * @return  all user CAPCO entries with duplicates suppressed.
      */
-    public static List<String> recusivelyExpandCapcoVisibility(List<String> userCapcoVisibilityEncodedStrings) {
+    public static List<String> expandClassification(List<String> userCapcoVisibilityEncodedStrings) {
         if (userCapcoVisibilityEncodedStrings == null) return null;
 
         final HashSet<String> capco = new LinkedHashSet<String>();
-        if (EXPAND_CAPCO_AS_TREE_OF_VISIBILITY) {
 
-            for (String c : userCapcoVisibilityEncodedStrings) {
+        for (String c : userCapcoVisibilityEncodedStrings) {
 
-                if ("c:TS".equalsIgnoreCase(c)) {
-                    capco.add("c:TS");
-                    capco.add("c:S");
-                    capco.add("c:C");
-                    capco.add("c:U");
-                } else if ("c:S".equalsIgnoreCase(c)) {
-                    capco.add("c:S");
-                    capco.add("c:C");
-                    capco.add("c:U");
-                } else if ("c:C".equalsIgnoreCase(c)) {
-                    capco.add("c:C");
-                    capco.add("c:U");
-                } else if ("c:U".equalsIgnoreCase(c)) {
-                    capco.add("c:U");
-                } else {
-                    capco.add(c);
-                }
-                break;
+            if ("c:TS".equalsIgnoreCase(c)) {
+                capco.add("c:TS");
+                capco.add("c:S");
+                capco.add("c:C");
+                capco.add("c:U");
+            } else if ("c:S".equalsIgnoreCase(c)) {
+                capco.add("c:S");
+                capco.add("c:C");
+                capco.add("c:U");
+            } else if ("c:C".equalsIgnoreCase(c)) {
+                capco.add("c:C");
+                capco.add("c:U");
+            } else if ("c:U".equalsIgnoreCase(c)) {
+                capco.add("c:U");
+            } else {
+                capco.add(c);
             }
-        } else {
-            capco.addAll(userCapcoVisibilityEncodedStrings);
+            break;
         }
+
         return new ArrayList<String>( capco );
     }
 
