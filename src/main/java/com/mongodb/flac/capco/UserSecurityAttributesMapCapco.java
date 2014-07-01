@@ -1,6 +1,5 @@
 package com.mongodb.flac.capco;
 
-import com.mongodb.flac.converter.FLACPropertyProvider;
 
 import java.util.*;
 
