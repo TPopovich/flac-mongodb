@@ -54,7 +54,7 @@ public class SecurityAttributes extends HashMap<String, Object> {
         for (String key : this.keySet()) {
             final Object obj = this.get(key);
             List<String> valList = null;
-            if (obj instanceof List) {
+            if (obj instanceof List) {        // we allow items to be either a String or List<String>
                 valList = (List<String>)obj;
             } else {
                 valList = Arrays.asList( (String) obj );
@@ -67,7 +67,13 @@ public class SecurityAttributes extends HashMap<String, Object> {
                 }
             }
         }
-        // Now that we have all terms, format into a list
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // This area is a place holder where you could insert special code, we will have a list of values like c:TS c:S ...
+        // and you can modify if you wanted.
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        // Now that we have all terms, format into a list in its canonical format
         stringBuilder.append("[ ");
         for (String val : secAttrSetFormattedKeyValue) {
 
