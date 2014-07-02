@@ -48,7 +48,7 @@ public class SecurityAttributes extends HashMap<String, Object> {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        final HashSet<String> secAttrSetFormattedKeyValue = new LinkedHashSet<String>();
+        stringBuilder.append("[ ");
 
         boolean first = true;
         for (String key : this.keySet()) {
@@ -62,41 +62,21 @@ public class SecurityAttributes extends HashMap<String, Object> {
             for (String val : valList) {
                 if (val != null) {
                     val = val.trim();
-                    final String formattedKeyValue = String.format("%s:%s", key, val);  // generates a term like c:TS
-                    secAttrSetFormattedKeyValue.add(formattedKeyValue);
+                    final String formattedKeyValue = String.format("{ %s:\"%s\" }", key, val); // generates a term like { c:"TS" }
+
+                    if (!first) {
+                        stringBuilder.append(", ");
+                    }
+                    first = false;
+                    stringBuilder.append(formattedKeyValue);
+
                 }
             }
         }
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // This area is a place holder where you could insert special code, we will have a list of values like c:TS c:S ...
-        // and you can modify if you wanted.
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        // Now that we have all terms, format into a list in its canonical format
-        stringBuilder.append("[ ");
-        for (String val : secAttrSetFormattedKeyValue) {
-
-            final String[] splitTerms = val.split(":");
-            final String formattedKeyValue = String.format("{ %s:\"%s\" }", splitTerms[0], splitTerms[1]);  // generates a term like { c:"TS" } from  "c:TS"
-
-            if (!first) {
-                stringBuilder.append(", ");
-            }
-            first = false;
-            stringBuilder.append(formattedKeyValue);
-        }
         stringBuilder.append(" ]");
 
-        return spyspy(stringBuilder.toString());
-
-    }
-
-
-
-    public static String spyspy(String s) {     //podpod
-        System.err.println("spyspy found: " + s);
-        return s;
+        return stringBuilder.toString();
     }
 
 }
