@@ -3,9 +3,9 @@ package com.mongodb.flac;
 /**
  * RedactedDBCollection Constants.
  *
- * <p> The method <tt> getSecurityExpression() </tt> will either fetch the default
- * mongodb $redact code needed to implement FLAC sufficient for CAPCO controls, or one
- * that you have redefined by calling setSecurityExpression(String).
+ * <p> The method <tt> <b>getSecurityExpression()</b> </tt> will either fetch the default
+ * mongodb $redact expression needed to implement FLAC sufficient for CAPCO controls, or one
+ * that you have redefined by calling <b>.setSecurityExpression(String)</b> in your application.
  *
  * </p>
  */
@@ -13,12 +13,12 @@ public class RedactedDBCollectionConstants {
     private static String securityExpression;
 
     /**
-     * get the SecurityExpression redact phase needed for mongodb to implement FLAC.
+     * get the <b>$redact expression</b> needed for mongodb to implement FLAC.
      *
-     * <p> we will either fetch the default
-     * mongodb $redact code needed to implement FLAC sufficient for CAPCO controls, or one
-     * that you have redefined by calling setSecurityExpression(String) </p>
-     * @return
+     * <p> we will either fetch the default CAPCO
+     *  $redact expression , which we wrote to implement FLAC sufficient for CAPCO controls, or one
+     * that you have redefined and have installed by calling setSecurityExpression(String) </p>
+     * @return  $redact expression multi line string
      */
     public static String getSecurityExpression() {
         if (securityExpression == null) { securityExpression = getDefaultSecurityExpression(); }
@@ -37,7 +37,7 @@ public class RedactedDBCollectionConstants {
 
     /** Note the default is
      * also stored in file securityExpression.json.  But having the code here allows this
-     * source code to easily be lean.
+     * source code to easily be lean.    This implements FLAC sufficient for CAPCO controls for an AND-ing of OR-s.
      */
     private static String getDefaultSecurityExpression() {
         return "{\n" +
