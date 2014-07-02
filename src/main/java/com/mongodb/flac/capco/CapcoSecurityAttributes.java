@@ -19,8 +19,8 @@ import java.util.*;
  * The setter <b>.setClearance(String)</b> knows how to translate clearance:TS into
  *    other lower levels i.e. clearances (S, C, and U).
  *    <br/>
- *    The setter <b>.setCitizenship(List<String>)</b>  also needs fully expanding, so it is not a complete
- *    implementatation.
+ *    The setter <b>.setCitizenship(List<String>)</b>  also needs fully expanding, so the implementation below it is not a complete
+ *    implementation.
  * </p>
  *
  * @see com.mongodb.flac.SecurityAttributes
@@ -45,14 +45,14 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
     /**
      * CAPCO specific Clearance levels have a nesting. THIS NEEDS TO FULLY EXPAND ANY IMPLIED ATTRIBUTES,
      * as by default, we simply use the attribute as is, if you need to  EXPAND you need to override this method
-     * and use your tuned CapcoSecurityAttributes class.
+     * and use your tuned CapcoSecurityAttributes class in your application.
      *
      * <p> IMPLIED TS => S => C => U  is supported by this method, so if you provide a Clearance of TS we
      *     will generate <tt>TS , S , C , U </tt>  for you similarly
      *     if you specify S we generate <tt> S , C , U </tt>  etc
      * </p>
      *
-     * @param clearance    an value like "TS"     (for top secret)
+     * @param clearance    a clearance value like "TS"     (for top secret)
      */
     public void setClearance(String clearance) {
         this.put("c", expandClearance(clearance) );
@@ -81,7 +81,8 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
      * @param citizenship
      */
     public void setCitizenship(List<String> citizenship) {
-        this.put("relto", citizenship) ;     // TODO:  this is not a complete implementation ; the full expansion is not done.
+        this.put("relto", citizenship) ;     // TODO:  this is not a complete implementation ; the full expansion is not done, e.g. a US citizenship
+                                             //        should map to a number of different relto values including USA and NOFORN.
     }
 
 
@@ -138,7 +139,7 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
     public String encodeAttributes() {
 
         // the super class encodeAttributes() will suffice for the CAPCO specific logic.  All the CAPCO specifics are in how
-        // the values expands, e.g. TS =>  expands to TS S C U
+        // the values expands, e.g. TS =>  expands to TS S C U , and we are doing that at the .setter level, e.g. .setClearance()
         return super.encodeAttributes();
 
     }
