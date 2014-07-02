@@ -77,6 +77,14 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
     }
 
 
+    /**
+     * implement any hierarchy of permissions here for clearance by returning the entire set that that
+     * specific clearance represents.  E.g. clearance=TS (top secret) implies also S C and U  so that
+     * here we need to deal with that expansion to list all permissions that TS implies.
+     *
+     * @param clearance
+     * @return
+     */
     private List<String> expandClearance(String clearance) {
 
         final HashSet<String> capco = new LinkedHashSet<String>();
@@ -96,7 +104,7 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
         } else if ("U".equalsIgnoreCase(clearance)) {
             capco.add("U");
         } else {
-            capco.add(clearance);
+            capco.add(clearance);   // if unknown, just pass it "as is"
         }
 
 
@@ -105,9 +113,9 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
 
 
     /**
-     * Convert java List of simple strings like: "c:TS"  formed from the Map of key/value pairs
-     * into encoded string in canonical format,
-     * and one appropriate for a Capco VisibilityString used in the $redact stage of aggregate.
+     * Convert to a specially crafted java List, the encoding of all our map of key/value pairs.
+     * This must be put into encoded string in canonical format,
+     * and one appropriate for a user's VisibilityString used in the $redact stage of aggregate.
      *
      * <p>Specifically look at the key/value pairs stored in this Map.  And then
      * convert a java list of simple strings like: key:value, e.g. "c:TS" (from our long running sample
