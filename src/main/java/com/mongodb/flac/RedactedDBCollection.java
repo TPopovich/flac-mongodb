@@ -15,35 +15,46 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
  * RedactedDBCollection is a class that acts like a DBCollection. It wraps a standard mongodb DBCollection.
- * But this class honors user specific FLAC security controls.  This allows
- * tight control on access to data, also known as Field Level Access Control.
- * <p/>
- * <p/>
+ *
+ * <p>But this class honors user specific FLAC security controls.  This allows
+ * tight control on access to data, also known as Field Level Access Control. </p>
+ *
  * <p> The application can then use the this class as they would use a normal DBCollection
  * for the most part.  Since the underlying find operations will be transformed into aggregation pipeline
- * there are a few minor restrictions.  However all find and aggregation
+ * there are a few minor restrictions.  However all find and aggregation run through an aggregation
+ * pipeline that has a special-purpose build $redact clause that implements CAPCO like security controls.
  * </p>
- * <p/>
- * <h3>Overview:</h3>
- * This class looks large but it not.  Picture a wrapped DBCollection.  Imagine all calls that deal
- * with a find or aggregation operation on that DBCollection getting trapped and instead converted
- * safely into a new aggregation pipeline that as its first stage has a carefully crafted
- * $redact clause to honor CAPCO like security controls.  Then the output from mongodb will only
- * contain fields and subdocuments that are able to be given to the current user.
  *
- * <p/>
+ * <h3>Overview:</h3>
+ * This class looks large, but, it is not.  Picture a wrapped DBCollection inside.  Imagine all calls that deal
+ * with a <b>find</b> or <b>aggregation</b> operation on that DBCollection getting trapped and instead converted
+ * safely into a new aggregation pipeline that has as its first stage the above mentioned carefully crafted
+ * $redact clause to honor CAPCO like security controls.  Then the output from mongodb will only
+ * contain fields and subdocuments that are able to be given to the current user. The user still has to
+ * store in the raw documents "document level controls" that look like this:<br/>
+ *  "somefield" : { "sl" : ____  , "value": ___ }   and the "sl" fields control access.  See our documents
+ *  that accompany this reference implementation and our test files for sample documents that are marked
+ *  up with "sl" fields.
+ *
+ *  <h3>Implementation Details</h3>
  *  The file has every permutation of find/aggregation permitted on DBCollection, but if you only
- *  need a few variations, you can safely comment out or delete the ones your do not need.
+ *  need a few variations, you could safely comment out or delete the ones your do not need.
  *
  * <p> Q: where / how does aggregation know the users ability to see certain fields?
  *     A: we have a class com.mongodb.flac.SecurityAttributes  that stores them. (Also see
- *     the CAPCO specific subclass com.mongodb.flac.capco.CapcoSecurityAttributes
+ *     the CAPCO specific subclass com.mongodb.flac.capco.CapcoSecurityAttributes). The
+ *     application will in general do the following, it will instantiate a SecurityAttributes
+ *     class and fill it with user permissions, e.g. clearance sci etc.  Then that class
+ *     is given to this class.  whatever user permissions are granted is used when we construct
+ *     the mongodb $redact phrase to indicate to mongo what documents and parts of documents
+ *     can be returned to this specific user.  (See the code below.)
  * </p>
  *
- * <p/>
+
+ * <h3>Typical usage pattern:</h3>
  * <p> As a little code will show, you can now do something like this: </p>
  * <p/>
- * <h3>Typical usage pattern:</h3>
+ *
  * <pre>
  *
  *     DBCollection dbCollectionSrc =  ... ;
@@ -75,6 +86,14 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * code subdirectory.
  * </p>
  *
+ * <h3> For more info about mongodb aggregation technology </h3>
+ *
+ * <p/>
+ *  $redact  http://docs.mongodb.org/master/reference/operator/aggregation/redact/#pipe._S_redact
+ *
+ * <p/>
+ *   aggregation  http://docs.mongodb.org/master/reference/operator/aggregation/
+ *
  * @see com.mongodb.flac.capco.CapcoSecurityAttributes
  * @see SecurityAttributes
  */
@@ -104,34 +123,31 @@ public class RedactedDBCollection {
      * access to a collection that
      * considers the information in the document honoring the
      * user specified FLAC "sl" (field level access control - security
-     * level) field
+     * level label) field
      * before accessing documents from that collection. No operation is
      * actually performed on the database with this call,
-     * we access it in a lazy manner.
+     * we access the wrapped collection in a lazy manner.
      * <p/>
-     * <p>
-     * This is similar to:
-     * <tt> RedactedDBCollection.fromCollection( db.getCollection("persons") , Map userSecurityAttributes ); </tt>
-     * but is used to create the wrapper directly instead of using a builder pattern.
-     * <p/>
-     * Consider a simple use case. See the {@link com.mongodb.flac.docs.SampleApplicationDescription} docs that are also included in the kit for more information.
+     *
+     *  <p>
+     * Consider a simple use case.
      * Given a DBCollection for the "persons" mongo collection
-     * and a set of UserSecurityAttributes, which have meaning perhaps for a government application, e.g.
+     * and a set of user's SecurityAttributes, which have meaning perhaps for a government application, e.g.
      * <pre><tt>
      *        clearance="TS"
      *        sci=[ "TK", "SI", "G", "HCS" ]
      *        countries=["US"]
      * </tt></pre>
-     * might set user attributes.  These are specified in the userSecurityAttributes map.
-     * <p/>
+     * These are specified in the userSecurityAttributes map.
      * </p>
+     * <p/>
      * <p> This wrapper class will internally build up a deferred aggregationPipeline that is called
-     * eventually when the user actually fetches data.
+     *     eventually when the user actually fetches data. And it will use the attributes stored
      * </p>
      *
      * @param wrappedDBCollection    the wrapped DB collection on which we operate
      * @param userSecurityAttributes a Map of attributes, e.g.  clearance="TS", sci=[ "TK", "SI", "G", "HCS" ] etc
-     *                               that provide the UserSecurityAttributes.  A detailed list of attributes might be:
+     *                               that provide the user's SecurityAttributes.  A detailed list of attributes might be:
      *                               <pre><tt>
      *                                      clearance="TS"
      *                                      sci=[ "TK", "SI", "G", "HCS" ]

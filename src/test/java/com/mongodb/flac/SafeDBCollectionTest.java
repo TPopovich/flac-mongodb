@@ -78,13 +78,9 @@ public class SafeDBCollectionTest extends TestCase {
     public void testFind() throws Exception {
 
     /*
-     * @param userAttributes      a Map of attributes, e.g.  clearance="TS", sci=[ "TK", "SI", "G", "HCS" ] etc
-     *                            that provide the UserSecurityAttributes.  A detailed list of attributes might be:
-     *                            <pre><tt>
-     *                                   clearance="TS"
-     *                                   sci=[ "TK" ]
-     *                                   countries=["US"]
-     *                            </tt></pre>
+     * @param userAttributes below is a Map of attributes, e.g.  clearance="TS", sci=[ "TK", "SI", "G", "HCS" ] etc
+     *                            that provide the user's SecurityAttributes.  A find() on the safeDBCollection
+     *                            will honor those user attributes.
      */
 
         DbCollectionHolder dbCollectionHolder = initSimpleCollection("ttt_customers");
