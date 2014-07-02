@@ -123,7 +123,8 @@ public class RedactedDBCollection {
     ReadPreference readPreference = null;
 
     /**
-     * The current users SecurityAttributes, which is a application specific mapping of security decls.
+     * The current users SecurityAttributes, which is a application specific mapping of security attributes,
+     * e.g. clearance  sci  citizenship   etc.
      */
     private SecurityAttributes userSecurityAttributes;
     public static final BasicDBObject EMPTY_OBJECT = new BasicDBObject(); // i.e. "{}";
@@ -148,7 +149,7 @@ public class RedactedDBCollection {
      * <pre><tt>
      *        clearance="TS"
      *        sci=[ "TK", "SI", "G", "HCS" ]
-     *        countries=["US"]
+     *        etc ...
      * </tt></pre>
      * These are specified in the userSecurityAttributes map.
      * </p>
@@ -163,7 +164,7 @@ public class RedactedDBCollection {
      *                               <pre><tt>
      *                                      clearance="TS"
      *                                      sci=[ "TK", "SI", "G", "HCS" ]
-     *                                      countries=["US"]
+     *                                      citizenship=["US"]
      *                               </tt></pre>
      */
     public RedactedDBCollection(DBCollection wrappedDBCollection, SecurityAttributes userSecurityAttributes) {
@@ -262,7 +263,7 @@ public class RedactedDBCollection {
 
 
     /**
-     * Queries for an object in this collection.
+     * Queries for an object in this collection using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @param query A document outlining the search query
      * @return an iterator over the results
@@ -272,7 +273,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Queries for an object in this collection.
+     * Queries for an object in this collection using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      * <p>
      * An empty DBObject will match every document in the collection.
      * Regardless of fields specified, the _id fields are always returned.
@@ -312,7 +313,7 @@ public class RedactedDBCollection {
 
 
     /**
-     * Queries for all objects in this collection.
+     * Queries for all objects in this collection using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @return a cursor which will iterate over every object
      * @mongodb.driver.manual tutorial/query-documents/ Query
@@ -323,7 +324,7 @@ public class RedactedDBCollection {
 
 
     /**
-     * Returns a single object from this collection.
+     * Returns a single object from this collection using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @return the object found, or {@code null} if the collection is empty
      * @throws MongoException
@@ -334,7 +335,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Returns a single object from this collection matching the query.
+     * Returns a single object from this collection matching the query using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @param o the query object
      * @return the object found, or {@code null} if no such object exists
@@ -346,7 +347,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Returns a single object from this collection matching the query.
+     * Returns a single object from this collection matching the query using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @param o      the query object
      * @param fields fields to return
@@ -359,7 +360,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Returns a single object from this collection matching the query.
+     * Returns a single object from this collection matching the query using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @param o       the query object
      * @param fields  fields to return
@@ -373,7 +374,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Get a single document from collection.
+     * Get a single document from collection using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @param o        the selection criteria using query operators.
      * @param fields   specifies which fields MongoDB will return from the documents in the result set.
@@ -387,7 +388,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Get a single document from collection.
+     * Get a single document from collection using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @param o        the selection criteria using query operators.
      * @param fields   specifies which projection MongoDB will return from the documents in the result set.
@@ -402,7 +403,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Get a single document from collection.
+     * Get a single document from collection using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @param query       the selection criteria using query operators.
      * @param fields      specifies which projection MongoDB will return from the documents in the result set.
@@ -440,7 +441,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Do aggregation pipeline in a secure manner.
+     * Do aggregation pipeline in a secure manner, using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @param pipeline       List<DBObject> of operations for aggregation Pipeline
      * @param options
@@ -464,7 +465,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Do aggregation pipeline in a secure manner.
+     * Do aggregation pipeline in a secure manner, using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @param firstOp       requisite first operation to be performed in the aggregation pipeline
      * @param additionalOps additional operations to be performed in the aggregation pipeline
@@ -483,7 +484,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Do aggregation pipeline in a secure manner.
+     * Do aggregation pipeline in a secure manner, using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @param pipeline operations to be performed in the aggregation pipeline
      * @return the aggregation's result set
@@ -495,7 +496,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Do aggregation pipeline in a secure manner.
+     * Do aggregation pipeline in a secure manner, using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @param pipeline       operations to be performed in the aggregation pipeline
      * @param readPreference the read preference specifying where to run the query
@@ -512,7 +513,7 @@ public class RedactedDBCollection {
     }
 
     /**
-     * Do aggregation pipeline in a secure manner.
+     * Do aggregation pipeline in a secure manner, using Secure AggregationPipeline, an implementation of FLAC (field level access control).
      *
      * @param pipeline operations to be performed in the aggregation pipeline
      * @param options  options to apply to the aggregation

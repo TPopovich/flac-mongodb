@@ -100,7 +100,7 @@ public class SafeDBCollectionTest extends TestCase {
         SecurityAttributes userAttributes = new SecurityAttributes();
         userAttributes.put("c", "TS");           // clearance is stored as c
         userAttributes.put("sci", Arrays.asList("TK", "SI", "G", "HCS"));
-        userAttributes.put("relto", Arrays.asList("US"));      // countries is stored as relto internally
+        userAttributes.put("relto", Arrays.asList("US"));      // citizenship is stored as relto internally
 
         RedactedDBCollection safeDBCollection = new RedactedDBCollection(wrappedDBCollection, userAttributes);
         // test RedactedDBCollection
