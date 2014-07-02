@@ -50,6 +50,33 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
         this.put("c", expandClearance(clearance) );
     }
 
+
+    public List<String> getSci() {
+        return (List<String>) this.get("sci");
+    }
+
+    public void setSci(List<String> sci) {
+        this.put("sci", sci) ;
+    }
+
+    public List<String> getCitizenship() { return (List<String>) this.get("relto");}
+
+    /**
+     * set the citizenship of the user, for their relto capabilities.
+     *
+     * <p>Note in CAPCO, e.g. US citizenship
+     * maps to a bunch of different relto values including USA and NOFORN.  This method should
+     * expand to appropriate values, similar to the setClearance above, as needed in your system. </p>
+     *
+     * <p>
+     *     <b>NOTE: this is not a complete implementation and does not expand citizenship values. </b>
+     * @param citizenship
+     */
+    public void setCitizenship(List<String> citizenship) {
+        this.put("relto", citizenship) ;     // TODO:  this is not a complete implementation ; the full expansion is not done.
+    }
+
+
     private List<String> expandClearance(String clearance) {
 
         final HashSet<String> capco = new LinkedHashSet<String>();
@@ -76,27 +103,6 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
         return new ArrayList<String>( capco );
     }
 
-    public List<String> getSci() {
-        return (List<String>) this.get("sci");
-    }
-
-    public void setSci(List<String> sci) {
-        this.put("sci", sci) ;
-    }
-
-    public List<String> getCitizenship() { return (List<String>) this.get("relto");}
-
-    /**
-     * set the citizenship of the user, in relto capabilities. Note in CAPCO, e.g. US citizenship
-     * maps to a bunch of different relto values including USA and NOFORN.  This method should
-     * expand to appropriate values, similar to the setClearance above, as needed in your system.
-     *
-     * <p> <b>NOTE: this is not a complete implementation and does not expand citizenship values. </b>
-     * @param citizenship
-     */
-    public void setCitizenship(List<String> citizenship) {
-        this.put("relto", citizenship) ;     // TODO:  this is not a complete implementation ; the full expansion is not done.
-    }
 
     /**
      * Convert java List of simple strings like: "c:TS"  formed from the Map of key/value pairs
@@ -132,9 +138,10 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
      * </tt>
      * </p>
      * <p/>
-     * <p> NOTES: we fully support generating lower level of TS S C and U  , for all others you need to expand yourself.</p>
+     * <p> NOTES: we fully support generating lower level of TS S C and U  , for all others you need to expand yourself.
+     *            This expand operation is done in the .setClearance method and other related setter methods.
+     * </p>
      *
-     * @param
      * @return    user Flac Security Strings defined by the map
      */
     public String encodeAttributes() {
