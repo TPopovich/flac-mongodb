@@ -1,12 +1,8 @@
 package com.mongodb.flac;
 
-import com.mongodb.*;
-import com.mongodb.flac.capco.CapcoSecurityAttributes;
-import com.mongodb.util.JSON;
-import com.mongodb.util.TestCase;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -14,10 +10,27 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.Cursor;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.Mongo;
+import com.mongodb.ReadPreference;
+import com.mongodb.WriteConcern;
+import com.mongodb.flac.capco.CapcoRedactExpression;
+import com.mongodb.flac.capco.CapcoSecurityAttributes;
+import com.mongodb.util.JSON;
+import com.mongodb.util.TestCase;
 
 
 public class RedactedDBCollectionTest extends TestCase {
+    
+    private CapcoRedactExpression capcoRedactExpression = new CapcoRedactExpression("sl");
 
     @BeforeClass
     public static void initCollectionInitConstants() throws Exception {
@@ -52,7 +65,7 @@ public class RedactedDBCollectionTest extends TestCase {
 
         final DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
-        final RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        final RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         final BasicDBObject sort = new BasicDBObject("firstName", -1);
         final Cursor dbObjects = redactedDBCollection.find(query, keys, 0, 0, 0, 0, ReadPreference.primary(), sort);
 
@@ -78,7 +91,7 @@ public class RedactedDBCollectionTest extends TestCase {
 
         final DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
-        final RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        final RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         final Cursor dbObjects = redactedDBCollection.find(query, keys);
 
         final boolean hasNext = dbObjects.hasNext();
@@ -104,7 +117,7 @@ public class RedactedDBCollectionTest extends TestCase {
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
 
-        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         final Cursor dbObjects = redactedDBCollection.find(query, keys);
 
         final boolean hasNext = dbObjects.hasNext();
@@ -133,7 +146,7 @@ public class RedactedDBCollectionTest extends TestCase {
         userSecurityAttributes.setClearance( "TS" );
         userSecurityAttributes.put("sci", "TK");
         // same as with:
-        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         Cursor dbObjectsCursor = redactedDBCollection.find(query, keys);
         DBObject orderBy = new BasicDBObject("_id", 1) ;
         assertEquals(true, dbObjectsCursor.hasNext());
@@ -160,7 +173,7 @@ public class RedactedDBCollectionTest extends TestCase {
         // same as with:
         userSecurityAttributes.setClearance("TS");
         userSecurityAttributes.setSci(Arrays.asList("TK"));
-        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         Cursor dbObjectsCursor = redactedDBCollection.find(query, keys);
         DBObject orderBy = new BasicDBObject("_id", 1) ;
         assertEquals(true, dbObjectsCursor.hasNext());
@@ -186,7 +199,7 @@ public class RedactedDBCollectionTest extends TestCase {
         // c:TS also maps to c:S,  c:C, and  c:U
         final CapcoSecurityAttributes userSecurityAttributes = new CapcoSecurityAttributes();
         userSecurityAttributes.setClearance( "TS" );
-        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         final Cursor dbObjects = redactedDBCollection.find(query, keys);
         DBObject orderBy = new BasicDBObject("_id", 1) ;
         final Cursor c = redactedDBCollection.find(query, keys, 0, ReadPreference.primaryPreferred(), orderBy);
@@ -208,7 +221,7 @@ public class RedactedDBCollectionTest extends TestCase {
 
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
-        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         final Cursor dbObjects = redactedDBCollection.find(query, keys);
 
         final boolean hasNext = dbObjects.hasNext();
@@ -229,7 +242,7 @@ public class RedactedDBCollectionTest extends TestCase {
 
         final DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
-        final RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        final RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         List<DBObject> pipelineForAggregate = new ArrayList<DBObject>();
         pipelineForAggregate.add(new BasicDBObject("$match",
                 new BasicDBObject("firstName", "Sheldon")));
@@ -279,7 +292,7 @@ public class RedactedDBCollectionTest extends TestCase {
 
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
-        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         final Cursor dbObjects = redactedDBCollection.find(query, keys);
 
         final boolean hasNext = dbObjects.hasNext();
@@ -296,7 +309,7 @@ public class RedactedDBCollectionTest extends TestCase {
 
         DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
-        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         final DBObject dbObject = redactedDBCollection.findOne(query, keys);
 
         assertNotNull(dbObject);
@@ -466,7 +479,7 @@ public class RedactedDBCollectionTest extends TestCase {
 
         // Now we get a new secure redactedDBCollection, that will honor the above CapcoSecurityAttributes
         // and only provide fields that this specific user is allowed to access:
-        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         Cursor dbObjectsCursor = redactedDBCollection.find(query, keys);
 
         final DBObject dbObject = dbObjectsCursor.next();
@@ -480,7 +493,7 @@ public class RedactedDBCollectionTest extends TestCase {
         final CapcoSecurityAttributes userSecurityAttributesTS = new CapcoSecurityAttributes();
         userSecurityAttributesTS.setClearance("TS");
         userSecurityAttributesTS.setSci(Arrays.asList("TK"));
-        RedactedDBCollection redactedDBCollectionTS = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
+        RedactedDBCollection redactedDBCollectionTS = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         Cursor dbObjectsCursorTS = redactedDBCollectionTS.find(query, keys);
         final DBObject dbObjectTS = dbObjectsCursorTS.next();
         System.out.println("First matching document: (c:TS/TK) :: " + dbObjectTS);

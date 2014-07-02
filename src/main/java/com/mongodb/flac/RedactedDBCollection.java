@@ -127,6 +127,9 @@ public class RedactedDBCollection {
      * e.g. clearance  sci  citizenship   etc.
      */
     private SecurityAttributes userSecurityAttributes;
+    
+    private RedactExpression redactExpression;
+    
     public static final BasicDBObject EMPTY_OBJECT = new BasicDBObject(); // i.e. "{}";
 
 
@@ -167,10 +170,10 @@ public class RedactedDBCollection {
      *                                      citizenship=["US"]
      *                               </tt></pre>
      */
-    public RedactedDBCollection(DBCollection wrappedDBCollection, SecurityAttributes userSecurityAttributes) {
+    public RedactedDBCollection(DBCollection wrappedDBCollection, SecurityAttributes userSecurityAttributes, RedactExpression redactExpression) {
         checkNotNull(wrappedDBCollection, "wrappedDBCollection can't be null");
         this.userSecurityAttributes = checkNotNull(userSecurityAttributes, "userSecurityAttributes can't be null");
-
+        this.redactExpression = checkNotNull(redactExpression, "redactExpression can't be null");
         this._wrapped = wrappedDBCollection;
         namespace = wrappedDBCollection.getFullName();
     }
@@ -533,12 +536,12 @@ public class RedactedDBCollection {
      */
     protected SecureAggregationPipeline getSecureAggregationPipelineForUser() {
         String visibilityAttributesForUser = this.userSecurityAttributes.encodeAttributes();
-        return getSecureAggregationPipelineForUserWorker(visibilityAttributesForUser);
+        return getSecureAggregationPipelineForUserWorker(userSecurityAttributes);
     }
 
-    protected static SecureAggregationPipeline getSecureAggregationPipelineForUserWorker(String visibilityAttributesForUser) {
+    protected SecureAggregationPipeline getSecureAggregationPipelineForUserWorker(SecurityAttributes userSecurityAttributes) {
         SecureAggregationPipeline redactPipeline = new SecureAggregationPipeline();
-        redactPipeline = prependSecurityRedactToPipelineWorker(redactPipeline, visibilityAttributesForUser);
+        redactPipeline = prependSecurityRedactToPipelineWorker(redactPipeline, userSecurityAttributes);
         return redactPipeline;
     }
 
@@ -549,9 +552,9 @@ public class RedactedDBCollection {
      * @param visibilityAttributesForUser visibility Attributes For User suitable for FLAC $redact operation
      * @return a new  List<DBObject> that has a $redact operation on the front
      */
-    private static SecureAggregationPipeline prependSecurityRedactToPipelineWorker(final ArrayList<DBObject> redactPipeline, final String visibilityAttributesForUser) {
+    private SecureAggregationPipeline prependSecurityRedactToPipelineWorker(final ArrayList<DBObject> redactPipeline, final SecurityAttributes userSecurityAttributes) {
         final SecureAggregationPipeline redactPipelineNew = new SecureAggregationPipeline();
-        final DBObject redactCommandForPipeline = getRedactCommand(visibilityAttributesForUser);
+        final DBObject redactCommandForPipeline = getRedactCommand(userSecurityAttributes);
 
         redactPipelineNew.add(redactCommandForPipeline);       // make sure that the $redact is the first thing in the aggregate pipeline
         redactPipelineNew.addAll(redactPipeline);
@@ -559,13 +562,12 @@ public class RedactedDBCollection {
     }
 
     /**
-     * build the "$redact" mongodb command based on current FLAC user visibilityAttributesForUser setting
+     * build the "$redact" mongodb command based on specified userSecurityAttributes
      */
-    private static DBObject getRedactCommand(String visibilityAttributesForUser) {
-        if (visibilityAttributesForUser == null || visibilityAttributesForUser.trim().length() == 0) {
-            visibilityAttributesForUser = "[ ]";
-        }
-        String userSecurityExpression = String.format(com.mongodb.flac.RedactedDBCollectionConstants.getSecurityExpression(), visibilityAttributesForUser);
+    private DBObject getRedactCommand(SecurityAttributes userSecurityAttributes) {
+        
+        //String userSecurityExpression = String.format(com.mongodb.flac.RedactedDBCollectionConstants.getSecurityExpression(), visibilityAttributesForUser);
+        String userSecurityExpression = redactExpression.getRedactExpression(userSecurityAttributes);
         logger.debug("**************** find/aggregate() userSecurityExpression: " + userSecurityExpression);
         DBObject redactCommand = (DBObject) JSON.parse(userSecurityExpression);
         return new BasicDBObject("$redact", redactCommand);

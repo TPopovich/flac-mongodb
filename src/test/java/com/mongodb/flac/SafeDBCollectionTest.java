@@ -1,17 +1,22 @@
 package com.mongodb.flac;
 
-import com.mongodb.*;
-import com.mongodb.util.TestCase;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.Scanner;
+
 import org.bson.types.BasicBSONList;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.UnknownHostException;
-import java.util.*;
-
-import static junit.framework.Assert.assertEquals;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.Mongo;
+import com.mongodb.flac.capco.CapcoRedactExpression;
+import com.mongodb.util.TestCase;
 
 public class SafeDBCollectionTest extends TestCase {
 
@@ -102,7 +107,7 @@ public class SafeDBCollectionTest extends TestCase {
         userAttributes.put("sci", Arrays.asList("TK", "SI", "G", "HCS"));
         userAttributes.put("relto", Arrays.asList("US"));      // citizenship is stored as relto internally
 
-        RedactedDBCollection safeDBCollection = new RedactedDBCollection(wrappedDBCollection, userAttributes);
+        RedactedDBCollection safeDBCollection = new RedactedDBCollection(wrappedDBCollection, userAttributes, new CapcoRedactExpression("sl"));
         // test RedactedDBCollection
 
         DBObject customerQuery = new BasicDBObject("firstname", "Tom");

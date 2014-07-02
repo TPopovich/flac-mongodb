@@ -1,0 +1,22 @@
+{
+  _id: 1,
+  title: "123 Department Report",
+  year: 2014,
+  subsections: [
+    {
+      subtitle: "Section 1: Overview",
+      security: [ [{"c" : "U"}] ],
+      content:  "Section 1 Content..."
+    },
+    {
+      subtitle: "Section 2: Analysis",
+      security: [ [{"c" : "S"}], [{"sci" : "SI"}] ],
+      content: "Section 2 Content..."
+    },
+    {
+      subtitle: "Section 3: Budgeting",
+      security: [ [{"c" : "TS"}], [{"sci" : "SI"}], [{"sci" : "TK"}] ],
+      content: "Section 3 Content..."
+    }
+  ]
+}

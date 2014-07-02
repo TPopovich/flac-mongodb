@@ -1,0 +1,23 @@
+{
+   _id: 1,
+   title: "123 Department Report",
+   tags: [ "low" ],
+   year: 2014,
+   subsections: [
+       {
+           subtitle: "Section 1: Overview",
+           tags: [ "low" ],
+           content:  "Section 1 Content..."
+       },
+       {
+           subtitle: "Section 2: Analysis",
+                      tags: [ "medium" ],
+           content: "Section 2 Content..."
+       },
+       {
+           subtitle: "Section 3: Budgeting",
+           tags: [ "high" ],
+           content: "Section 3 Content..."
+       }
+   ]
+}
