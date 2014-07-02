@@ -57,12 +57,14 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  *
  * <pre>
  *
+ *     final BasicDBObject query = new BasicDBObject("firstName", "Alice");    // locate docs with { firstName: "Alice" }
+ *     final BasicDBObject keys = new BasicDBObject();                           // get all fields/columns
  *     DBCollection dbCollectionSrc =  ... ;
  *
  *     <span style="color:green">CapcoSecurityAttributes</span> userSecurityAttributes = new <span style="color:green">CapcoSecurityAttributes()</span>;
  *
- *     userSecurityAttributes.setClearance("U");     // set the users permissions
- *
+ *     userSecurityAttributes.setClearance("TS");     // set the users permissions
+ *     userSecurityAttributes.setSci(Arrays.asList("TK"));
  *
  *     // construct a protected interface that honors FLAC security by using a  RedactedDBCollection
  *     <span style="color:green">RedactedDBCollection</span> redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes);
@@ -71,9 +73,19 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  *     final DBObject dbObject = dbObjectsCursor.next();     // the return value depends on the userSecurityAttributes
  *                                                           // and different users may see different components
  *
- *
  * </pre>
- * </p>
+ * <p/>
+ *
+ * <h3>Code Step by Step</h3>
+ * <pre>
+     1,2  we choose the query that we want { firstName of “Alice” } and all available fields.
+     3 we get the original DBCollection, this is not protected by FLAC
+     4 we construct the object needed to specify the current users permissions
+     5 we continue step 4 by saying that the user has clearance of TS and has SCI of TK
+     6 we construct the protected RedactedDBCollection that wraps the native unprotected DBCollection , and all operations on it will honor FLAC
+     7 we display the matching records
+ * </pre>
+ *
  * <p/>
  * <p> See the <span style="color:green">$redact processor</span> that we created in {@link com.mongodb.flac.capco.CapcoSecurityAttributes} which is created for CAPCO
  * ( http://fas.org/sgp/othergov/intel/capco_reg.pdf ) like protection, where we have an AND-ing of OR-s so we
@@ -81,8 +93,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * <p/>
  * <p/>
  * </p>
- * <p> See a complete 9 line application built on FLAC by looking at some test code found in:
- * <span style="color:green">com.mongodb.flac.RedactedDBCollectionTest#sampleApplication()</span>. See that file in the test
+ * <p> See a complete 9 line application, the core of that application your saw above,  built on FLAC by looking at some test code found in:
+ * <span style="color:green">com.mongodb.flac.RedactedDBCollectionTest#sampleApplication()</span>.  Find that file in the test
  * code subdirectory.
  * </p>
  *
