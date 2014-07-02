@@ -28,12 +28,11 @@ public class SecurityAttributes extends HashMap<String, Object> {
      * convert a java list of simple strings like: key:value, e.g. "c:TS" (from our long running sample
      * application we have been discussing in the documentation) into an appropriate canonical VisibilityString.</p>m
      *
-     * <p> The specific list of security attributes is system dependent, below we will describe
-     *     and Capco like Visibility Strings to make a concrete example and also point out that
-     *     you need to expand the setting if
-     *     a setting , below see, c:TS, has domain meaning to be a superset of
-     *     other lower level security settings. E.g. in CAPCO TS also implies
-     *     that you have S C U.
+     * <p> The specific list of security attributes is system dependent; we provide a subclass that implements
+     *     Capco like Visibility Strings, and knows how to deal with expanding the setting if
+     *     a setting such as clearance:TS, has domain meaning to be a set of
+     *     other lower level security settings too. E.g. in CAPCO TS (top secret) also implies
+     *     that you have S C U  clearance settings.
      *
      * </p>
      *
@@ -42,7 +41,7 @@ public class SecurityAttributes extends HashMap<String, Object> {
      *
      * @param
      * @return    canonical user Flac Security Strings defined by the map that might look like e.g.
-     * [ { c:\"TS\" }, { c:\"S\" }, { c:\"U\" }, { c:\"C\" }, { sci:\"TK\" }, { sci:\"SI\" }, { sci:\"G\" }, { sci:\"HCS\" } ]
+     *    [ { c:\"TS\" }, { c:\"S\" }, { c:\"U\" }, { c:\"C\" }, { sci:\"TK\" }, { sci:\"SI\" }, { sci:\"G\" }, { sci:\"HCS\" } ]
      */
     public String encodeAttributes() {
 

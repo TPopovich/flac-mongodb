@@ -6,14 +6,14 @@ import com.mongodb.flac.SecurityAttributes;
 import java.util.*;
 
 /**
- * SecurityAttributes for Capco,  describes the User Security attributes for the user.
+ * SecurityAttributes for Capco. This describes the User Security attributes for the user.
  *
- * <p> This is a SecurityAttributes class that implements CAPCO behavior such
+ * <p> This implements CAPCO behavior and provides features such
  * as clearance TS also means a person with TS also inherits clearances (S, C, and U). </p>
  *
- * <p> It also has getter/setters for the CAPCO attributes of: clearances, sci, and citizenship.</p>
+ * <p> It also has getter/setters for the CAPCO attributes of: clearances, sci, and citizenship (for relto).</p>
  *
- * <p>For more info on CAPCO see http://fas.org/sgp/othergov/intel/capco_reg.pdf </p>
+ * <p>For more info on CAPCO, see http://fas.org/sgp/othergov/intel/capco_reg.pdf </p>
  *
  * @see com.mongodb.flac.SecurityAttributes
  *
@@ -36,7 +36,7 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
 
     /**
      * CAPCO specific Clearance levels have a nesting. THIS NEEDS TO FULLY EXPAND ANY IMPLIED ATTRIBUTES,
-     * as by default we simply use the attribute as is, if you need to  EXPAND you need to override this method
+     * as by default, we simply use the attribute as is, if you need to  EXPAND you need to override this method
      * and use your tuned CapcoSecurityAttributes class.
      *
      * <p> IMPLIED TS => S => C => U  is supported by this method, so if you provide a Clearance of TS we
@@ -121,36 +121,11 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
      * convert a java list of simple strings like: key:value, e.g. "c:TS" (from our long running sample
      * application we have been discussing in the documentation) into an appropriate canonical VisibilityString.</p>
      *
-     * </tt>
-     * <p> <b>See Examples below for more details:</b>
-     * </p>
-     * <p>
-     * <tt>
-     * UserSecurityAttributes.EncodingUtils.expandCapcoVisibility(new String[]{"c:TS", "c:S"})
-     * note here we deal with S being contained in TS
-     * </tt>
-     * generates:
-     * <br/>
-     * <tt>
-     * "[ { c:\"TS\" }, { c:\"S\" }, { c:\"C\" }, { c:\"U\" } ]"
-     * </tt>
-     * </p>
-     * <p>
-     * <tt>
-     * UserSecurityAttributes.EncodingUtils.expandCapcoVisibility(new String[]{"c:TS",  "sci:TK",  "sci:SI",  "sci:G",  "sci:HCS"})
-     * </tt>
-     * generates:
-     * <br/>
-     * <tt>
-     * "[ { c:\"TS\" }, { c:\"S\" }, { c:\"U\" }, { c:\"C\" }, { sci:\"TK\" }, { sci:\"SI\" }, { sci:\"G\" }, { sci:\"HCS\" } ]";
-     * </tt>
-     * </p>
-     * <p/>
      * <p> NOTES: we fully support generating lower level of TS S C and U  , for all others you need to expand yourself.
      *            This expand operation is done in the .setClearance method and other related setter methods.
      * </p>
      *
-     * @return    user Flac Security Strings defined by the map
+     * @return    user Flac Security Strings defined by the map of User Attributes.
      */
     public String encodeAttributes() {
 
