@@ -15,6 +15,14 @@ import java.util.*;
  *
  * <p>For more info on CAPCO, see http://fas.org/sgp/othergov/intel/capco_reg.pdf </p>
  *
+ * <p>Implementation Note:<br/>
+ * The setter <b>.setClearance(String)</b> knows how to translate clearance:TS into
+ *    other lower levels i.e. clearances (S, C, and U).
+ *    <br/>
+ *    The setter <b>.setCitizenship(List<String>)</b>  also needs fully expanding, so it is not a complete
+ *    implementatation.
+ * </p>
+ *
  * @see com.mongodb.flac.SecurityAttributes
  *
  */
