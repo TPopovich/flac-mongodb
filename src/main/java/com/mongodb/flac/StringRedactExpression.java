@@ -30,11 +30,11 @@ public class StringRedactExpression implements RedactExpression {
     }
 
     private void verifyThatTwoPlaceholdersGiven(String redactExpression) {
-        final int indexOf = redactExpression.indexOf("%s");
-        if (-1 == indexOf) {
+        final int indexOfFirstPlaceholder = redactExpression.indexOf("%s");
+        if (-1 == indexOfFirstPlaceholder) {
             throw new IllegalArgumentException("redactExpression should have 2 %s placeholders");
         }
-        if (-1 == (redactExpression.indexOf("%s", indexOf + 1))) {
+        if (-1 == (redactExpression.indexOf("%s", indexOfFirstPlaceholder + 1))) {
             throw new IllegalArgumentException("redactExpression should have 2 %s placeholders");
         }
     }
