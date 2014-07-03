@@ -23,6 +23,7 @@ public class StringRedactExpression implements RedactExpression {
      * @param redactExpression
      */
     public StringRedactExpression(String securityFieldName, String redactExpression) {
+        this.securityFieldName = securityFieldName;
         this.redactExpression = redactExpression;
     }
 
