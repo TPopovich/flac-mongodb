@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
+import com.mongodb.util.TestCase;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +37,7 @@ public class CapcoRedactTest {
         File file = new ClassPathResource("capcoDocumentMarkingsExample.json").getFile();
         String json = FileUtils.readFileToString(file);
         MongoClient mongo = new MongoClient();
-        DB db = mongo.getDB("test");
+        DB db = mongo.getDB(TestCase.MONGO_DBNAME_FOR_TEST_DATA);
         collection = db.getCollection(this.getClass().getSimpleName());
         collection.drop();
         collection.insert((DBObject) JSON.parse(json));
