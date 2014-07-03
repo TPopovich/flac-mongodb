@@ -24,10 +24,19 @@ public class StringRedactExpression implements RedactExpression {
      */
     public StringRedactExpression(String securityFieldName, String redactExpression) {
         this.securityFieldName = securityFieldName;
-        final int indexOf = redactExpression.indexOf("%s");
-        if (-1 == indexOf) { throw new IllegalArgumentException("redactExpression should have 2 %s placeholders"); }
-        if (-1 == (redactExpression.indexOf("%s", indexOf+1))) { throw new IllegalArgumentException("redactExpression should have 2 %s placeholders"); }
         this.redactExpression = redactExpression;
+
+        verifyThatTwoPlaceholdersGiven(redactExpression);
+    }
+
+    private void verifyThatTwoPlaceholdersGiven(String redactExpression) {
+        final int indexOf = redactExpression.indexOf("%s");
+        if (-1 == indexOf) {
+            throw new IllegalArgumentException("redactExpression should have 2 %s placeholders");
+        }
+        if (-1 == (redactExpression.indexOf("%s", indexOf + 1))) {
+            throw new IllegalArgumentException("redactExpression should have 2 %s placeholders");
+        }
     }
 
     /**
