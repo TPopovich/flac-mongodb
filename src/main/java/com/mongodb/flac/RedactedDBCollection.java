@@ -109,7 +109,6 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  * @see com.mongodb.flac.capco.CapcoSecurityAttributes
  * @see SecurityAttributes
  */
-@SuppressWarnings("deprecation")
 public class RedactedDBCollection {
 
     // typedef  alias - an Aggregation Pipeline is an ArrayList of DBObject's  - this is just a name for an  ArrayList<DBObject>
@@ -478,7 +477,6 @@ public class RedactedDBCollection {
      * @deprecated Use {@link com.mongodb.DBCollection#aggregate(java.util.List)} instead
      */
     @Deprecated
-    @SuppressWarnings("unchecked")
     public Cursor aggregate(final DBObject firstOp, final DBObject... additionalOps) {
         List<DBObject> pipeline = new ArrayList<DBObject>();
         pipeline.add(firstOp);
@@ -535,7 +533,6 @@ public class RedactedDBCollection {
      * @return new pipeline {@link java.util.ArrayList} with SecurityRedact phase on the front.
      */
     protected SecureAggregationPipeline getSecureAggregationPipelineForUser() {
-        String visibilityAttributesForUser = this.userSecurityAttributes.encodeAttributes();
         return getSecureAggregationPipelineForUserWorker(userSecurityAttributes);
     }
 
@@ -621,13 +618,6 @@ public class RedactedDBCollection {
         return false;
     }
 
-    private boolean dbObjectHasData(Object object) {
-        if (object != null) {
-            return true;
-        }
-        return false;
-    }
-
 
     /**
      * get the provided or default ReadPreference (currently ReadPreference.primary() ).
@@ -654,17 +644,6 @@ public class RedactedDBCollection {
         if (fields == null) return def;
         return fields;
     }
-
-    private Object safeDref(String fields, String def) {
-        if (fields == null) return def;
-        return fields;
-    }
-
-    private Object safeDref(Number fields, Number def) {
-        if (fields == null) return def;
-        return fields;
-    }
-
 
     private static final Logger TRACE_LOGGER = Logger.getLogger("com.mongodb.flac.TRACE");
     private static final Level TRACE_LEVEL = Boolean.getBoolean("DB.TRACE") ? Level.INFO : Level.FINEST;
