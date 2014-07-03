@@ -23,6 +23,7 @@ public class StringRedactExpression implements RedactExpression {
      * @param redactExpression       for $redact phase of mongodb aggregation-pipeline
      */
     public StringRedactExpression(String securityFieldName, String redactExpression) {
+        this.securityFieldName = securityFieldName;
         final int indexOf = redactExpression.indexOf("%s");
         if (-1 == indexOf) { throw new IllegalArgumentException("redactExpression should have 2 %s placeholders"); }
         if (-1 == (redactExpression.indexOf("%s", indexOf+1))) { throw new IllegalArgumentException("redactExpression should have 2 %s placeholders"); }

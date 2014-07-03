@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.core.io.ClassPathResource;
 
@@ -20,16 +21,21 @@ public class RedactTest {
 
     private CapcoRedactExpression capcoRedactExpression = new CapcoRedactExpression("sl");
     
-    @Test
-    public void test() throws IOException {
+    private DBCollection collection;
+
+    @Before
+    public void setupData() throws IOException {
         File file = new ClassPathResource("securityMarkingsExample1.json").getFile();
         String json = FileUtils.readFileToString(file);
-        
         MongoClient mongo = new MongoClient();
-
         DB db = mongo.getDB("test");
-        DBCollection collection =  db.getCollection(this.getClass().getSimpleName());
-        collection.insert((DBObject)JSON.parse(json));
+        collection = db.getCollection(this.getClass().getSimpleName());
+        collection.drop();
+        collection.insert((DBObject) JSON.parse(json));
+    }
+    
+    @Test
+    public void test() throws IOException {
         
         SecurityAttributes userSecurityAttributes = new SecurityAttributes();
         userSecurityAttributes.put("security", "low");

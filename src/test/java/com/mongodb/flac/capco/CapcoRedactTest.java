@@ -10,6 +10,8 @@ import java.util.Arrays;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
 import com.mongodb.BasicDBList;
@@ -24,6 +26,8 @@ import com.mongodb.flac.RedactedDBCollection;
 import com.mongodb.util.JSON;
 
 public class CapcoRedactTest {
+    
+    protected static final Logger logger = LoggerFactory.getLogger(CapcoRedactTest.class);
 
     private DBCollection collection;
 
@@ -56,6 +60,7 @@ public class CapcoRedactTest {
         userSecurityAttributes.setSci(Arrays.asList("SI"));
 
         DBObject result = getFirstRedactedResult(userSecurityAttributes);
+        logger.debug(result.toString());
 
         assertNotNull(result);
         BasicDBList subsections = (BasicDBList) result.get("subsections");
