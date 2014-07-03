@@ -19,7 +19,7 @@ import com.mongodb.Cursor;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 import com.mongodb.flac.capco.CapcoRedactExpression;
@@ -49,8 +49,7 @@ public class RedactedDBCollectionTest extends TestCase {
 
     /** fetch the DBCollection used for testing RedactedDBCollection */
     private static DBCollection getDbCollectionUsedForTesting() throws UnknownHostException {
-        Mongo mongo = new Mongo();
-
+        MongoClient mongo = new MongoClient();
         DB db = mongo.getDB("test");
         return db.getCollection("person3");
     }
@@ -148,7 +147,6 @@ public class RedactedDBCollectionTest extends TestCase {
         // same as with:
         RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         Cursor dbObjectsCursor = redactedDBCollection.find(query, keys);
-        DBObject orderBy = new BasicDBObject("_id", 1) ;
         assertEquals(true, dbObjectsCursor.hasNext());
         //reopen the cursor
         dbObjectsCursor = redactedDBCollection.find(query, keys);
@@ -175,7 +173,6 @@ public class RedactedDBCollectionTest extends TestCase {
         userSecurityAttributes.setSci(Arrays.asList("TK"));
         RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
         Cursor dbObjectsCursor = redactedDBCollection.find(query, keys);
-        DBObject orderBy = new BasicDBObject("_id", 1) ;
         assertEquals(true, dbObjectsCursor.hasNext());
         //reopen the cursor
         dbObjectsCursor = redactedDBCollection.find(query, keys);
@@ -237,9 +234,6 @@ public class RedactedDBCollectionTest extends TestCase {
     @Test
     public void testAggregate() throws Exception {
 
-        final BasicDBObject query = new BasicDBObject();
-        final BasicDBObject keys = new BasicDBObject();
-
         final DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
         final RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
@@ -256,19 +250,6 @@ public class RedactedDBCollectionTest extends TestCase {
         compareJSON(expectedRec1, actual);
 
         assertEquals(false, dbObjects.hasNext());
-    }
-
-    private void compareJSON(String json1, String json2)  {
-
-        final DBObject j1 = (DBObject) JSON.parse(json1);
-        final DBObject j2 = (DBObject) JSON.parse(json2);
-
-        final HashSet<String> hashSetJ1 = new HashSet<String>(j1.keySet());
-        final HashSet<String> hashSetJ2 = new HashSet<String>(j2.keySet());
-        assertEquals(hashSetJ1, hashSetJ2);
-        for (String k : hashSetJ1) {
-            assertEquals(j1.get(k), j2.get(k));
-        }
     }
 
     private void compareJSON(String json1, DBObject dbObject)  {

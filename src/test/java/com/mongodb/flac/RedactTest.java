@@ -12,7 +12,7 @@ import com.mongodb.Cursor;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.flac.capco.CapcoRedactExpression;
 import com.mongodb.util.JSON;
 
@@ -25,7 +25,7 @@ public class RedactTest {
         File file = new ClassPathResource("securityMarkingsExample1.json").getFile();
         String json = FileUtils.readFileToString(file);
         
-        Mongo mongo = new Mongo();
+        MongoClient mongo = new MongoClient();
 
         DB db = mongo.getDB("test");
         DBCollection collection =  db.getCollection(this.getClass().getSimpleName());

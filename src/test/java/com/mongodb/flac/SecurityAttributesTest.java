@@ -1,11 +1,9 @@
 package com.mongodb.flac;
 
+import java.util.Arrays;
+
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 
 public class SecurityAttributesTest {
 
@@ -49,14 +47,5 @@ public class SecurityAttributesTest {
         Assert.assertEquals(true, actual.contains("{ sci:\"TK\" }"));
         Assert.assertEquals(true, actual.contains("{ sci:\"SI\" }"));
         Assert.assertEquals(true, actual.contains("c:\"X\""));
-    }
-
-
-    private void compareListsOrderNotImportant(List<String> e, List<String> actual) {
-        Assert.assertEquals(new HashSet(e), new HashSet(actual));
-    }
-
-    private void compareListsOrderNotImportant(String oneElement, List<String> actual) {
-        Assert.assertEquals(new HashSet(Arrays.asList(oneElement)), new HashSet(actual));
     }
 }

@@ -41,6 +41,7 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
     ///  as needed.
     ///////////////////////////////
 
+    @SuppressWarnings("unchecked")
     public List<String> getClearance() {
         return (List<String>) this.get("c");
     }
@@ -62,6 +63,7 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
     }
 
 
+    @SuppressWarnings("unchecked")
     public List<String> getSci() {
         return (List<String>) this.get("sci");
     }
@@ -70,6 +72,7 @@ public class CapcoSecurityAttributes extends SecurityAttributes {
         this.put("sci", sci);
     }
 
+    @SuppressWarnings("unchecked")
     public List<String> getCitizenship() {
         return (List<String>) this.get("relto");
     }

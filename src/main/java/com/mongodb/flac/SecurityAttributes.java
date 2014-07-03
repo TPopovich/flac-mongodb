@@ -43,6 +43,7 @@ public class SecurityAttributes extends HashMap<String, Object> {
      * @return    canonical user Flac Security Strings defined by the map that might look like e.g.
      *    [ { c:\"TS\" }, { c:\"S\" }, { c:\"U\" }, { c:\"C\" }, { sci:\"TK\" }, { sci:\"SI\" }, { sci:\"G\" }, { sci:\"HCS\" } ]
      */
+    @SuppressWarnings("unchecked")
     public String encodeAttributes() {
 
         StringBuilder stringBuilder = new StringBuilder();
