@@ -10,7 +10,7 @@ public class StringRedactExpressionTest extends TestCase {
     //    @Ignore
     //    @Test(expected = java.lang.IllegalArgumentException.class)
     //    public void testGetRedactExpressionFailsToHaveTwoPlaceholds() throws Exception {
-    //        StringRedactExpression stringRedactExpression = new StringRedactExpression("sl", "");
+    //        StringRedactExpression stringRedactExpression = new StringRedactExpression("sl", "");  // lacks 2 %s  placeholders
     //        final CapcoSecurityAttributes securityAttributes = new CapcoSecurityAttributes();
     //        securityAttributes.setClearance("TS");
     //        final String redactExpression = stringRedactExpression.getRedactExpression(securityAttributes);
