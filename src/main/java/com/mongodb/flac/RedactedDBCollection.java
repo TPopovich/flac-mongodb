@@ -546,7 +546,7 @@ public class RedactedDBCollection {
      * prepend the SecurityRedact Phrase To Pipeline and return a new redactPipeline and also
      *
      * @param redactPipeline              pipeline that we need to modify to prepend the $redact phase onto
-     * @param visibilityAttributesForUser visibility Attributes For User suitable for FLAC $redact operation
+     * @param userSecurityAttributes      visibility Attributes For User suitable for FLAC $redact operation
      * @return a new  List<DBObject> that has a $redact operation on the front
      */
     private SecureAggregationPipeline prependSecurityRedactToPipelineWorker(final ArrayList<DBObject> redactPipeline, final SecurityAttributes userSecurityAttributes) {
