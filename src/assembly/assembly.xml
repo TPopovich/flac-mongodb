@@ -38,6 +38,7 @@
 			<directory>${basedir}</directory>
 			<includes>
 				<include>*.txt</include>
+				<include>*.pdf</include>
 			</includes>
 		</fileSet>
 	</fileSets>
