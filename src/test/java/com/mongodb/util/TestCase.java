@@ -23,12 +23,14 @@ public class TestCase {
 
     public static final String DEFAULT_URI = "mongodb://localhost:27017";
     public static final String MONGODB_URI_SYSTEM_PROPERTY_NAME = "org.mongodb.test.uri";
+    public static final String MONGO_DBNAME_FOR_TEST_DATA = "test3";
     private static MongoClientURI mongoClientURI;
 
     private static MongoClient staticMongoClient;
     private static final String cleanupDB = "mongo-java-flac-test";
     protected DBCollection collection;
 
+    ;
     @BeforeClass
     public static void testCaseBeforeClass() {
         if (staticMongoClient == null) {

@@ -50,7 +50,7 @@ public class RedactedDBCollectionTest extends TestCase {
     /** fetch the DBCollection used for testing RedactedDBCollection */
     private static DBCollection getDbCollectionUsedForTesting() throws UnknownHostException {
         MongoClient mongo = new MongoClient();
-        DB db = mongo.getDB("test");
+        DB db = mongo.getDB(TestCase.MONGO_DBNAME_FOR_TEST_DATA);
         return db.getCollection("person3");
     }
 
@@ -91,13 +91,15 @@ public class RedactedDBCollectionTest extends TestCase {
         final DBCollection dbCollectionSrc = getDbCollectionUsedForTesting();
         final SecurityAttributes userSecurityAttributes = new SecurityAttributes();
         final RedactedDBCollection redactedDBCollection = new RedactedDBCollection(dbCollectionSrc, userSecurityAttributes, capcoRedactExpression);
-        final Cursor dbObjects = redactedDBCollection.find(query, keys);
+        DBObject orderBy = new BasicDBObject("_id", 1) ;
+        final Cursor dbObjects = redactedDBCollection.find(query, keys, 0, ReadPreference.primaryPreferred(), orderBy);
 
         final boolean hasNext = dbObjects.hasNext();
         assertEquals(true, hasNext);
         final String expectedRec1 = "{ \"_id\" : \"5375052930040f83a06f115a\" , \"firstName\" : \"Sheldon\" , \"lastName\" : \"Humphrey\" , \"foo\" : \"bar\"}";
 
         final DBObject actual = dbObjects.next();
+        System.out.println("actual : " + actual);
         compareJSON(expectedRec1, actual);
 
         final String expectedRec2 = "{ \"_id\" : \"5375052930040f83a06f1160\" , \"firstName\" : \"Alice\" , \"lastName\" : \"Fuentes\"}";
