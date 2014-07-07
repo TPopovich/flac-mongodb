@@ -24,13 +24,13 @@
 			<scope>runtime</scope>
 		</dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
 
-        <dependency>
+		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
 			<version>2.12.2</version>
@@ -60,7 +60,7 @@
 
 
 	</dependencies>
-	
+
 	<build>
 
 		<finalName>${artifactId}-${version}</finalName>
@@ -74,32 +74,6 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>appassembler-maven-plugin</artifactId>
-				<version>1.8</version>
-				<configuration>
-					<assembleDirectory>${project.build.directory}/scripts</assembleDirectory>
-					<programs>
-						<program>
-							<mainClass>com.mongodb.query.analyzer.ProfileQueryAnalyzer</mainClass>
-							<id>profileQueryAnalyzer</id>
-						</program>
-					</programs>
-					<repositoryLayout>flat</repositoryLayout>
-					<repositoryName>lib</repositoryName>
-					<configurationDirectory>conf</configurationDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<id>assemble</id>
-						<goals>
-							<goal>assemble</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 
 			<plugin>
@@ -191,6 +165,20 @@
 					</archive>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<id>attach-javadocs</id>
+						<goals>
+                        <goal>aggregate</goal>
+                    </goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 		<!-- Above maven-dependepcy-plugin gives a validation error in m2e. To 
 			fix that, add the plugin management step below. Per: http://stackoverflow.com/a/12109018 -->
